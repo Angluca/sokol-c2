@@ -9,9 +9,9 @@ LDFLAGS=
 https://github.com/floooh/sokol
 # sokol_impl.c in LIB_DIR, build lib when hasn't libsokol.a
 LIB_SOURCE= ~/SDK/Sokols/sokol
-LIB_DIR= lib
+LIB_DIR= ../../lib
 APP_NAME= clear
-APP_PATH= examples/clear
+APP_PATH= 
 
 #=================================
 OBJS= $(LIB_DIR)/sokol_impl.o

@@ -1,4 +1,4 @@
-module my_test;
+module clear;
 import stdio local;
 import sokol_app as sa;
 import sokol_gfx as sg;
@@ -7,27 +7,30 @@ import sokol_log as sl;
 
 sg.PassAction pass_action;
 fn void init() {
-    sg.Desc desc = {.environment = sglu.environment(), .logger = {.func = sl.func}}
+    sg.Desc desc = {
+        .environment = sglu.environment(),
+        .logger = {.func = sl.func}
+    }
     sg.setup(&desc);
     switch(sg.queryBackend()) {
-        case D3D11: printf("-- using D3D11 backend"); break;
+        case D3D11: printf("-- using D3D11 backend\n"); break;
         case GLCORE:
         case GLES3:
-            printf("-- using GL backend");
+            printf("-- using GL backend\n");
             break;
         case METAL_MACOS:
         case METAL_IOS:
         case METAL_SIMULATOR:
-            printf("-- using METAL backend");
+            printf("-- using METAL backend\n");
             break;
-        case WGPU: printf("-- using WGPU backend"); break;
-        case DUMMY: printf("-- using DUMMY backend"); break;
+        case WGPU: printf("-- using WGPU backend\n"); break;
+        case DUMMY: printf("-- using DUMMY backend\n"); break;
     }
 }
 
 fn void frame() {
     f32 g = pass_action.colors[0].clear_value.g + 0.01;
-    pass_action.colors[0].clear_value.g = g>1.0?0.0:g;
+    pass_action.colors[0].clear_value.g = g > 1.0 ? 0.0 : g;
     sg.Pass pass = {.action = pass_action, .swapchain = sglu.swapchain()}
     sg.beginPass(&pass);
     sg.endPass();
@@ -38,20 +41,6 @@ fn void cleanup() {
     sg.shutdown();
 }
 
-fn sa.Desc soko_main(i32 argc, char** argv) {
-    sa.Desc desc = {
-        .init_cb = init,
-        .frame_cb = frame,
-        .cleanup_cb = cleanup,
-        .width = 640,
-        .height = 480,
-        .window_title = "sokol_test",
-        .icon = {.sokol_default = true},
-        .logger = {.func = sl.func},
-    }
-    return desc;
-}
-
 public fn i32 main(i32 argc, char** argv) {
     sa.Desc desc = {
         .init_cb = init,
@@ -59,7 +48,7 @@ public fn i32 main(i32 argc, char** argv) {
         .cleanup_cb = cleanup,
         .width = 640,
         .height = 480,
-        .window_title = "sokol_test",
+        .window_title = "clear",
         .icon = {.sokol_default = true},
         .logger = {.func = sl.func},
     }
