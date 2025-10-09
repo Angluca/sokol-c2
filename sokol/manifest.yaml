@@ -1,0 +1,24 @@
+# C2 wrapper for sokol
+
+info:
+    language: c
+    type: library
+    linkname: sokol
+    kinds:
+        - static
+        - dynamic
+
+dependencies:
+    libc: dynamic
+
+modules:
+    - sokol_app
+    - sokol_audio
+    - sokol_debugtext
+    - sokol_gfx
+    - sokol_gl
+    - sokol_glue
+    - sokol_log
+    - sokol_shape
+    - sokol_time
+

@@ -1,0 +1,129 @@
+// machine generated, do not edit
+module sokol_shape;
+import c2 local;
+
+fn Buffer buildPlane(Buffer* buf, Plane* params) @(cname="sshape_build_plane");
+fn Buffer buildBox(Buffer* buf, Box* params) @(cname="sshape_build_box");
+fn Buffer buildSphere(Buffer* buf, Sphere* params) @(cname="sshape_build_sphere");
+fn Buffer buildCylinder(Buffer* buf, Cylinder* params) @(cname="sshape_build_cylinder");
+fn Buffer buildTorus(Buffer* buf, Torus* params) @(cname="sshape_build_torus");
+fn Sizes planeSizes(u32 tiles) @(cname="sshape_plane_sizes");
+fn Sizes boxSizes(u32 tiles) @(cname="sshape_box_sizes");
+fn Sizes sphereSizes(u32 slices, u32 stacks) @(cname="sshape_sphere_sizes");
+fn Sizes cylinderSizes(u32 slices, u32 stacks) @(cname="sshape_cylinder_sizes");
+fn Sizes torusSizes(u32 sides, u32 rings) @(cname="sshape_torus_sizes");
+fn ElementRange elementRange(Buffer* buf) @(cname="sshape_element_range");
+fn BufferDesc vertexBufferDesc(Buffer* buf) @(cname="sshape_vertex_buffer_desc");
+fn BufferDesc indexBufferDesc(Buffer* buf) @(cname="sshape_index_buffer_desc");
+fn VertexBufferLayoutState vertexBufferLayoutState() @(cname="sshape_vertex_buffer_layout_state");
+fn VertexAttrState positionVertexAttrState() @(cname="sshape_position_vertex_attr_state");
+fn VertexAttrState normalVertexAttrState() @(cname="sshape_normal_vertex_attr_state");
+fn VertexAttrState texcoordVertexAttrState() @(cname="sshape_texcoord_vertex_attr_state");
+fn VertexAttrState colorVertexAttrState() @(cname="sshape_color_vertex_attr_state");
+fn u32 color4f(c_float r, c_float g, c_float b, c_float a) @(cname="sshape_color_4f");
+fn u32 color3f(c_float r, c_float g, c_float b) @(cname="sshape_color_3f");
+fn u32 color4b(u8 r, u8 g, u8 b, u8 a) @(cname="sshape_color_4b");
+fn u32 color3b(u8 r, u8 g, u8 b) @(cname="sshape_color_3b");
+fn Mat4 mat4(c_float* m) @(cname="sshape_mat4");
+fn Mat4 mat4Transpose(c_float* m) @(cname="sshape_mat4_transpose");
+
+type Range struct @(cname="sshape_range") {
+    void* ptr;
+    usize size;
+}
+
+type Mat4 struct @(cname="sshape_mat4_t") {
+    c_float[4][4] m;
+}
+
+type Vertex struct @(cname="sshape_vertex_t") {
+    c_float x;
+    c_float y;
+    c_float z;
+    u32 normal;
+    u16 u;
+    u16 v;
+    u32 color;
+}
+
+type ElementRange struct @(cname="sshape_element_range_t") {
+    c_int base_element;
+    c_int num_elements;
+}
+
+type SizesItem struct @(cname="sshape_sizes_item_t") {
+    u32 num;
+    u32 size;
+}
+
+type Sizes struct @(cname="sshape_sizes_t") {
+    SizesItem vertices;
+    SizesItem indices;
+}
+
+type BufferItem struct @(cname="sshape_buffer_item_t") {
+    Range buffer;
+    usize data_size;
+    usize shape_offset;
+}
+
+type Buffer struct @(cname="sshape_buffer_t") {
+    bool valid;
+    BufferItem vertices;
+    BufferItem indices;
+}
+
+type Plane struct @(cname="sshape_plane_t") {
+    c_float width;
+    c_float depth;
+    u16 tiles;
+    u32 color;
+    bool random_colors;
+    bool merge;
+    Mat4 transform;
+}
+
+type Box struct @(cname="sshape_box_t") {
+    c_float width;
+    c_float height;
+    c_float depth;
+    u16 tiles;
+    u32 color;
+    bool random_colors;
+    bool merge;
+    Mat4 transform;
+}
+
+type Sphere struct @(cname="sshape_sphere_t") {
+    c_float radius;
+    u16 slices;
+    u16 stacks;
+    u32 color;
+    bool random_colors;
+    bool merge;
+    Mat4 transform;
+}
+
+type Cylinder struct @(cname="sshape_cylinder_t") {
+    c_float radius;
+    c_float height;
+    u16 slices;
+    u16 stacks;
+    u32 color;
+    bool random_colors;
+    bool merge;
+    Mat4 transform;
+}
+
+type Torus struct @(cname="sshape_torus_t") {
+    c_float radius;
+    c_float ring_radius;
+    u16 sides;
+    u16 rings;
+    u32 color;
+    bool random_colors;
+    bool merge;
+    Mat4 transform;
+}
+
+

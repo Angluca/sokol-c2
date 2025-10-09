@@ -1,0 +1,6 @@
+executable test
+    $warnings no-unused
+    $backend c no-build
+    $use sokol static
+    test.c2
+end

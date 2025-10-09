@@ -1,2 +1,15 @@
 # sokol-c2
-C2 bindings for the sokol headers (https://github.com/floooh/sokol)
+C2 bindings for the sokol headers  
+(https://github.com/floooh/sokol)
+
+Start only test, will add examples later :)
+
+* have https://github.com/c2lang/c2compiler
+* get https://github.com/floooh/sokol
+* copy``` sokol-c2/sokol```to```c2compiler/libs/```
+* modify makefile:```LIB_SOURCE = (just download sokol path)```
+* make run
+
+If build echo ```max char 31 error```,  
+You can modify ```c2compiler/ast_utils/constants.c2:line 21:public const u32 MaxIdentifierLen = 99;```  
+and rebuild ```c2compiler```  

@@ -1,0 +1,76 @@
+// machine generated, do not edit
+module sokol_audio;
+import c2 local;
+
+fn void setup(Desc* desc) @(cname="saudio_setup");
+fn void shutdown() @(cname="saudio_shutdown");
+fn bool isvalid() @(cname="saudio_isvalid");
+fn void* userdata() @(cname="saudio_userdata");
+fn Desc queryDesc() @(cname="saudio_query_desc");
+fn c_int sampleRate() @(cname="saudio_sample_rate");
+fn c_int bufferFrames() @(cname="saudio_buffer_frames");
+fn c_int channels() @(cname="saudio_channels");
+fn bool suspended() @(cname="saudio_suspended");
+fn c_int expect() @(cname="saudio_expect");
+fn c_int push(c_float* frames, c_int num_frames) @(cname="saudio_push");
+
+type LogItem enum i32 @(cname="saudio_log_item") {
+    OK = 0,
+    MALLOC_FAILED = 1,
+    ALSA_SND_PCM_OPEN_FAILED = 2,
+    ALSA_FLOAT_SAMPLES_NOT_SUPPORTED = 3,
+    ALSA_REQUESTED_BUFFER_SIZE_NOT_SUPPORTED = 4,
+    ALSA_REQUESTED_CHANNEL_COUNT_NOT_SUPPORTED = 5,
+    ALSA_SND_PCM_HW_PARAMS_SET_RATE_NEAR_FAILED = 6,
+    ALSA_SND_PCM_HW_PARAMS_FAILED = 7,
+    ALSA_PTHREAD_CREATE_FAILED = 8,
+    WASAPI_CREATE_EVENT_FAILED = 9,
+    WASAPI_CREATE_DEVICE_ENUMERATOR_FAILED = 10,
+    WASAPI_GET_DEFAULT_AUDIO_ENDPOINT_FAILED = 11,
+    WASAPI_DEVICE_ACTIVATE_FAILED = 12,
+    WASAPI_AUDIO_CLIENT_INITIALIZE_FAILED = 13,
+    WASAPI_AUDIO_CLIENT_GET_BUFFER_SIZE_FAILED = 14,
+    WASAPI_AUDIO_CLIENT_GET_SERVICE_FAILED = 15,
+    WASAPI_AUDIO_CLIENT_SET_EVENT_HANDLE_FAILED = 16,
+    WASAPI_CREATE_THREAD_FAILED = 17,
+    AAUDIO_STREAMBUILDER_OPEN_STREAM_FAILED = 18,
+    AAUDIO_PTHREAD_CREATE_FAILED = 19,
+    AAUDIO_RESTARTING_STREAM_AFTER_ERROR = 20,
+    USING_AAUDIO_BACKEND = 21,
+    AAUDIO_CREATE_STREAMBUILDER_FAILED = 22,
+    COREAUDIO_NEW_OUTPUT_FAILED = 23,
+    COREAUDIO_ALLOCATE_BUFFER_FAILED = 24,
+    COREAUDIO_START_FAILED = 25,
+    BACKEND_BUFFER_SIZE_ISNT_MULTIPLE_OF_PACKET_SIZE = 26,
+}
+
+type Logger struct @(cname="saudio_logger") {
+    LogCb func;
+    void* user_data;
+}
+
+type Allocator struct @(cname="saudio_allocator") {
+    AllocCb alloc_fn;
+    FreeCb free_fn;
+    void* user_data;
+}
+
+type Desc struct @(cname="saudio_desc") {
+    c_int sample_rate;
+    c_int num_channels;
+    c_int buffer_frames;
+    c_int packet_frames;
+    c_int num_packets;
+    StreamCb stream_cb;
+    StreamDataCb stream_userdata_cb;
+    void* user_data;
+    Allocator allocator;
+    Logger logger;
+}
+
+type LogCb fn void(const char*, u32, u32, const char*, u32, const char*, void*);
+type AllocCb fn void*(usize, void*);
+type FreeCb fn void(void*, void*);
+type StreamCb fn void(c_float*, c_int, c_int);
+type StreamDataCb fn void(c_float*, c_int, c_int, void*);
+
