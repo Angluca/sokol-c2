@@ -1,38 +1,42 @@
 module myapp;
 import stdio local;
-import sokol_app as sa;
+import sokol_app as sapp;
 import sokol_gfx as sg;
-import sokol_glue as sglu;
-import sokol_log as sl;
+import sokol_glue as sglue;
+import sokol_log as slog;
 
 sg.PassAction pass_action;
 fn void init() {
     sg.Desc desc = {
-        .environment = sglu.environment(),
-        .logger = {.func = sl.func}
+        .environment = sglue.environment(),
+        .logger = {.func = slog.func}
     }
     sg.setup(&desc);
+    pass_action.colors[0] = {
+        .load_action = sg.LoadAction.CLEAR,
+        .clear_value = {0.0, 0.0, 1.0, 1.0}
+    }
+
     switch(sg.queryBackend()) {
-        case D3D11: printf("-- using D3D11 backend"); break;
+        case D3D11: printf("-- using D3D11 backend\n"); break;
         case GLCORE:
         case GLES3:
-            printf("-- using GL backend");
+            printf("-- using GL backend\n");
             break;
         case METAL_MACOS:
         case METAL_IOS:
         case METAL_SIMULATOR:
-            printf("-- using METAL backend");
+            printf("-- using METAL backend\n");
             break;
-        case WGPU: printf("-- using WGPU backend"); break;
-        case DUMMY: printf("-- using DUMMY backend"); break;
+        case WGPU: printf("-- using WGPU backend\n"); break;
+        case DUMMY: printf("-- using DUMMY backend\n"); break;
     }
-        printf("-- using DUMMY backend");
 }
 
 fn void frame() {
     f32 g = pass_action.colors[0].clear_value.g + 0.01;
-    pass_action.colors[0].clear_value.g = g > 1.0 ? 0.0 : g;
-    sg.Pass pass = {.action = pass_action, .swapchain = sglu.swapchain()}
+    pass_action.colors[0].clear_value.g = (g > 1.0) ? 0.0 : g;
+    sg.Pass pass = {.action = pass_action, .swapchain = sglue.swapchain()}
     sg.beginPass(&pass);
     sg.endPass();
     sg.commit();
@@ -43,7 +47,7 @@ fn void cleanup() {
 }
 
 public fn i32 main(i32 argc, char** argv) {
-    sa.Desc desc = {
+    sapp.Desc desc = {
         .init_cb = init,
         .frame_cb = frame,
         .cleanup_cb = cleanup,
@@ -51,9 +55,9 @@ public fn i32 main(i32 argc, char** argv) {
         .height = 480,
         .window_title = "myapp",
         .icon = {.sokol_default = true},
-        .logger = {.func = sl.func},
+        .logger = {.func = slog.func},
     }
-    sa.run(&desc);
+    sapp.run(&desc);
     return 0;
 }
 

@@ -14,7 +14,7 @@ fn void init() {
     sg.setup(&desc);
     pass_action.colors[0] = {
         .load_action = sg.LoadAction.CLEAR,
-        .clear_value = {1.0, 0.0, 0.0, 1.0}
+        .clear_value = {0.0, 0.0, 1.0, 1.0}
     }
 
     switch(sg.queryBackend()) {

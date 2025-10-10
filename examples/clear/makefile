@@ -1,7 +1,7 @@
 CC = gcc
 AR = ar
-CFLAGS=-Wall -Wextra -Wno-unused -Wno-switch
-CFLAGS+= -Wno-unused-parameter -Wno-missing-field-initializers -Wno-format-zero-length
+CFLAGS= -Wall -Wextra -Wno-unused -Wno-switch -Wno-unused-parameter 
+CFLAGS+= -Wno-missing-field-initializers -Wno-format-zero-length
 CFLAGS+= -pipe -funsigned-char -std=c99 -O2
 CFLAGS+= -DSOKOL_GLCORE -DSOKOL_NO_ENTRY
 LDFLAGS= 
@@ -76,4 +76,4 @@ cleanall:
 	@rm -i ./$(SOKOLIB) 
 	$(info "--- if you want del libsokol.a press [y] ---")
  
-.PHONY: all clean cleanall cc run
+.PHONY: all clean cleanall cc run getlib

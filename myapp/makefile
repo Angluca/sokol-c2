@@ -1,9 +1,9 @@
 CC = gcc
 AR = ar
-CFLAGS=-Wall -Wextra -Wno-unused -Wno-switch
-CFLAGS+= -Wno-unused-parameter -Wno-missing-field-initializers -Wno-format-zero-length
+CFLAGS= -Wall -Wextra -Wno-unused -Wno-switch -Wno-unused-parameter 
+CFLAGS+= -Wno-missing-field-initializers -Wno-format-zero-length
 CFLAGS+= -pipe -funsigned-char -std=c99 -O2
-CFLAGS+= -DSOKOL_GLCORE -DSOKOL_NO_ENTRY
+CFLAGS+= -DSOKOL_NO_ENTRY
 LDFLAGS= 
 #---------------------------------\
 https://github.com/floooh/sokol
@@ -11,8 +11,9 @@ https://github.com/floooh/sokol
 LIB_SOURCE= ~/SDK/Sokols/sokol
 LIB_DIR= ../lib
 APP_NAME= myapp
-APP_PATH= 
-
+APP_DIR=
+OS= macos
+# select OS: macos/windows/linux/wasm or null
 #=================================
 OBJS= $(LIB_DIR)/sokol_impl.o
 SOKOLIB= $(LIB_DIR)/libsokol.a
@@ -21,12 +22,12 @@ LDFLAGS+= -L $(LIB_DIR) -lsokol
 #------------------------------------
 APP=  $(APP_NAME)
 CGEN= output/$(APP_NAME)/cgen
-ifneq ($(wildcard $(APP_PATH)),)
-APP=  $(APP_PATH)/$(APP_NAME)
-CGEN= $(APP_PATH)/output/$(APP_NAME)/cgen
+ifneq ($(wildcard $(APP_DIR)),)
+APP=  $(APP_DIR)/$(APP_NAME)
+CGEN= $(APP_DIR)/output/$(APP_NAME)/cgen
 endif #==============================
-ifeq ($(shell uname),Darwin)
-CFLAGS+= -x objective-c # -arch x86_64
+ifeq ($(OS),macos) # ------ macos
+CFLAGS+= -x objective-c -DSOKOL_GLCORE  # -arch x86_64
 FRAMEWORKS= -framework Cocoa \
              -framework QuartzCore \
              -framework OpenGL \
@@ -39,6 +40,22 @@ FRAMEWORKS= -framework Cocoa \
 #------------------------------------
 BUILD= $(CGEN)/build
 LDFLAGS+= $(FRAMEWORKS)
+endif #==============================
+ifeq ($(OS),linux) #------- linux
+CFLAGS+= -DSOKOL_GLCORE
+LDFLAGS+= -lGL -lX11 -lXi -lXcursor -ldl -lpthread -lm
+endif #==============================
+ifeq ($(OS),windows) #----- windows
+CFLAGS+= -DSOKOL_GLCORE
+LDFLAGS+= -lGL -ldl -lpthread -lm
+endif #==============================
+ifeq ($(OS),wasm) #-------- wasm
+CFLAGS= -DSOKOL_GLES3 -DSOKOL_NO_ENTRY -s USE_WEBGL2=1 
+CC= emcc
+endif #==============================
+ifeq ($(OS),) #------------ custom
+CFLAGS= -DSOKOL_GLES3 -DSOKOL_NO_ENTRY
+CC=
 endif #==============================
 
 all: cc $(APP)
@@ -59,8 +76,9 @@ ifeq ($(wildcard $(SOKOLIB)),)
 endif #==============================
  
 cc:
-ifneq ($(wildcard $(APP_PATH)),)
-	c2c -d ./$(APP_PATH)
+	$(info -------- system: $(OS) --------------)
+ifneq ($(wildcard $(APP_DIR)),)
+	c2c -d ./$(APP_DIR)
 else
 	c2c 
 endif #==============================
@@ -69,11 +87,11 @@ run:
 	@make && ./$(APP)
 
 clean:
-	rm -rf ./$(APP) ./$(APP_PATH)/output ./$(OBJS)
+	rm -rf ./$(APP) ./$(APP_DIR)/output ./$(OBJS)
 
 cleanall:
-	rm -rf ./$(APP) ./$(APP_PATH)/output ./$(OBJS)
+	rm -rf ./$(APP) ./$(APP_DIR)/output ./$(OBJS)
 	@rm -i ./$(SOKOLIB) 
 	$(info "--- if you want del libsokol.a press [y] ---")
  
-.PHONY: all clean cleanall cc run
+.PHONY: all clean cleanall cc run getlib
