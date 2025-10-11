@@ -1,0 +1,66 @@
+module triangle;
+import stdio local;
+import sokol_app as sapp;
+import sokol_gfx as sg;
+import sokol_glue as sglue;
+import sokol_log as slog;
+
+type State struct {
+    sg.Pipeline pip;
+    sg.PassAction pass_action;
+} State state;
+
+fn void init() {
+    sg.Desc desc = {
+        .environment = sglue.environment(),
+        .logger = {.func = slog.func}
+    } sg.setup(&desc);
+
+    // look ma, no vertex buffer!
+
+    // create a shader object
+    sg.ShaderDesc sd = triangleShaderDesc(sg.queryBackend());
+    sg.Shader shd = sg.makeShader(&sd);
+
+    // ...and a pipeline object, note that there's no vertex layout since there's
+    // no vertex data passed into the shader.
+    // All other pipeline attributes can be left to their defaults for a 2D triangle
+    // to show up.
+    sg.PipelineDesc pd = { .shader = shd }
+    state.pip = sg.makePipeline(&pd);
+
+    // a pass action to clear framebuffer to blue
+    state.pass_action.colors[0] = {
+        .load_action = CLEAR,
+        .clear_value = {0.0, 0.0, 1.0, 1.0}
+    }
+}
+
+fn void frame() {
+    sg.Pass pass = {.action = state.pass_action, .swapchain = sglue.swapchain()}
+    sg.beginPass(&pass);
+    sg.applyPipeline(state.pip);
+    sg.draw(0, 3, 1);
+    sg.endPass();
+    sg.commit();
+}
+
+fn void cleanup() {
+    sg.shutdown();
+}
+
+public fn i32 main(i32 argc, char** argv) {
+    sapp.Desc desc = {
+        .init_cb = init,
+        .frame_cb = frame,
+        .cleanup_cb = cleanup,
+        .width = 640,
+        .height = 480,
+        .window_title = "triangle-buffer",
+        .icon = {.sokol_default = true},
+        .logger = {.func = slog.func},
+    }
+    sapp.run(&desc);
+    return 0;
+}
+

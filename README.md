@@ -14,6 +14,7 @@ build run examples
 ```zsh
 make example=clear run
 make example=triangle run
+make example=triangle-bufferless run
 ```
 > If build echo ```max char 31 error```,  
 > modify ```c2compiler/ast_utils/constants.c2:line 21:public const u32 MaxIdentifierLen = 99;```  

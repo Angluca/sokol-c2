@@ -74,7 +74,7 @@ public fn i32 main(i32 argc, char** argv) {
         .cleanup_cb = cleanup,
         .width = 640,
         .height = 480,
-        .window_title = "Triangle",
+        .window_title = "triangle",
         .icon = {.sokol_default = true},
         .logger = {.func = slog.func},
     }
