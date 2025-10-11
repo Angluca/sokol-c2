@@ -1,3 +1,6 @@
+plugin deps_generator [all-targets files private]
+plugin refs_generator [all-targets]
+
 executable triangle
     $warnings no-unused
     $backend c no-build

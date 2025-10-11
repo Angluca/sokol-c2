@@ -3,7 +3,7 @@ AR = ar
 CFLAGS= -Wall -Wextra -Wno-unused -Wno-switch -Wno-unused-parameter 
 CFLAGS+= -Wno-missing-field-initializers -Wno-format-zero-length
 CFLAGS+= -pipe -funsigned-char -std=c99 -O2
-CFLAGS+= -DSOKOL_NO_ENTRY
+CFLAGS+= 
 LDFLAGS= 
 #---------------------------------\
 https://github.com/floooh/sokol
@@ -77,23 +77,23 @@ endif #==============================
  
 cc:
 	$(info -------- system: $(OS) --------)
+ifneq ($(wildcard $(APP).glsl),)
+	make build_glsl
+endif #==============================
+
 ifneq ($(wildcard $(APP_DIR)),)
 	c2c -d ./$(APP_DIR)
 else
 	c2c 
 endif #==============================
 
-ifneq ($(wildcard $(APP).glsl),)
-	make build_glsl
-endif #==============================
-
 SOKOL_EXISTS := $(shell command -v sokol-shdc 2>/dev/null) 
 build_glsl:
 ifneq ($(wildcard $(SOKOL_EXISTS)),)
 ifdef glsl
-	$(call cglsl,./$(APP_DIR)/$(glsl).glsl,glsl410)
+	$(call cglsl,./$(APP_DIR)/$(glsl).glsl,glsl410:hlsl4:metal_macos)
 else
-	$(call cglsl,./$(APP).glsl,glsl410)
+	$(call cglsl,./$(APP).glsl,glsl410:hlsl4:metal_macos)
 endif
 endif #==============================
 

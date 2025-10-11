@@ -22,29 +22,33 @@ fn void init() {
     f32[] vertices = {
         // postions         // colors
         0.0, 0.5, 0.5,      1.0, 0.0, 0.0, 1.0,
-        0.5, 0.5, 0.5,      0.0, 1.0, 0.0, 1.0,
+        0.5,-0.5, 0.5,      0.0, 1.0, 0.0, 1.0,
        -0.5,-0.5, 0.5,      0.0, 0.0, 1.0, 1.0,
-    } sg.BufferDesc bdesc = {
-        .data = {vertices, sizeof(vertices)},
+    } sg.BufferDesc bd = {
+        .data = {.ptr = &vertices, .size = sizeof(vertices)},
         .label = "vertex-buffer"
-    } state.bind.vertex_buffers[0] = sg.makeBuffer(&bdesc);
+    } state.bind.vertex_buffers[0] = sg.makeBuffer(&bd);
 
     // create shader from code-generated sg_shader_desc
     sg.ShaderDesc sd = triangleShaderDesc(sg.queryBackend());
     sg.Shader shd = sg.makeShader(&sd);
+
+    if(sg.queryShaderState(shd) != sg.ResourceState.VALID) {
+        printf("------- shd error ---------\n");
+    }
     // create a pipeline object (default render states are fine for triangle)
-    sg.PipelineDesc pldesc = {
+    sg.PipelineDesc pd = {
         .shader = shd,
         // if the vertex layout doesn't have gaps, don't need to provide strides and offsets
         .layout = {
             .attrs = {
                 [ATTR_TRIANGLE_POSITION] = { .format = sg.VertexFormat.FLOAT3 },
-                [ATTR_TRIANGLE_COLOR0] = { .format = sg.VertexFormat.FLOAT3 },
+                [ATTR_TRIANGLE_COLOR0] = { .format = FLOAT4 },
             }
         },
         .label = "triangle-pipeline",
     }
-    state.pip = sg.makePipeline(&pldesc);
+    state.pip = sg.makePipeline(&pd);
 
     // a pass action to clear framebuffer to black
     state.pass_action.colors[0] = {
