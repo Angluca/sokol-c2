@@ -5,6 +5,6 @@ executable triangle
     $warnings no-unused
     $backend c no-build
     $use sokol static
-    triangle.glsl.c2
     main.c2
+    triangle.glsl.c2
 end

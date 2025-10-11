@@ -32,10 +32,6 @@ fn void init() {
     // create shader from code-generated sg_shader_desc
     sg.ShaderDesc sd = triangleShaderDesc(sg.queryBackend());
     sg.Shader shd = sg.makeShader(&sd);
-
-    if(sg.queryShaderState(shd) != sg.ResourceState.VALID) {
-        printf("------- shd error ---------\n");
-    }
     // create a pipeline object (default render states are fine for triangle)
     sg.PipelineDesc pd = {
         .shader = shd,
