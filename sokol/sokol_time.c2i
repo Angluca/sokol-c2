@@ -1,6 +1,5 @@
 // machine generated, do not edit
 module sokol_time;
-import c2 local;
 
 fn void setup() @(cname="stm_setup");
 fn u64 now() @(cname="stm_now");
@@ -8,9 +7,9 @@ fn u64 diff(u64 new_ticks, u64 old_ticks) @(cname="stm_diff");
 fn u64 since(u64 start_ticks) @(cname="stm_since");
 fn u64 laptime(u64* last_time) @(cname="stm_laptime");
 fn u64 roundToCommonRefreshRate(u64 frame_ticks) @(cname="stm_round_to_common_refresh_rate");
-fn c_double sec(u64 ticks) @(cname="stm_sec");
-fn c_double ms(u64 ticks) @(cname="stm_ms");
-fn c_double us(u64 ticks) @(cname="stm_us");
-fn c_double ns(u64 ticks) @(cname="stm_ns");
+fn f64 sec(u64 ticks) @(cname="stm_sec");
+fn f64 ms(u64 ticks) @(cname="stm_ms");
+fn f64 us(u64 ticks) @(cname="stm_us");
+fn f64 ns(u64 ticks) @(cname="stm_ns");
 
 

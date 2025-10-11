@@ -11,7 +11,6 @@ https://github.com/floooh/sokol
 LIB_SOURCE= ~/SDK/Sokols/sokol
 LIB_DIR= ../lib
 APP_NAME= myapp
-APP_DIR=
 OS= macos
 # select OS: macos/windows/linux/wasm or null
 #=================================
@@ -74,13 +73,28 @@ getlib:
 ifeq ($(wildcard $(SOKOLIB)),)
 	@make $(SOKOLIB)
 endif #==============================
+	#$(eval $(call))
  
 cc:
-	$(info -------- system: $(OS) --------------)
+	$(info -------- system: $(OS) --------)
 ifneq ($(wildcard $(APP_DIR)),)
 	c2c -d ./$(APP_DIR)
 else
 	c2c 
+endif #==============================
+
+ifneq ($(wildcard $(APP).glsl),)
+	make build_glsl
+endif #==============================
+
+SOKOL_EXISTS := $(shell command -v sokol-shdc 2>/dev/null) 
+build_glsl:
+ifneq ($(wildcard $(SOKOL_EXISTS)),)
+ifdef glsl
+	$(call cglsl,./$(APP_DIR)/$(glsl).glsl,glsl410)
+else
+	$(call cglsl,./$(APP).glsl,glsl410)
+endif
 endif #==============================
 
 run: 
@@ -90,8 +104,13 @@ clean:
 	rm -rf ./$(APP) ./$(APP_DIR)/output ./$(OBJS)
 
 cleanall:
-	rm -rf ./$(APP) ./$(APP_DIR)/output ./$(OBJS)
+	make clean
 	@rm -i ./$(SOKOLIB) 
 	$(info "--- if you want del libsokol.a press [y] ---")
- 
+
+define cglsl
+	$(info ------ build glsl: $1 ------)
+	sokol-shdc -i $1 -o ./$1.c2 -l $2 -f sokol_c2
+endef
+
 .PHONY: all clean cleanall cc run getlib

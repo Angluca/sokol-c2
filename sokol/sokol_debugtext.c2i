@@ -1,6 +1,5 @@
 // machine generated, do not edit
 module sokol_debugtext;
-import c2 local;
 
 fn void setup(Desc* desc) @(cname="sdtx_setup");
 fn void shutdown() @(cname="sdtx_shutdown");
@@ -17,28 +16,28 @@ fn Context getContext() @(cname="sdtx_get_context");
 fn Context defaultContext() @(cname="sdtx_default_context");
 fn void draw() @(cname="sdtx_draw");
 fn void contextDraw(Context ctx) @(cname="sdtx_context_draw");
-fn void drawLayer(c_int layer_id) @(cname="sdtx_draw_layer");
-fn void contextDrawLayer(Context ctx, c_int layer_id) @(cname="sdtx_context_draw_layer");
-fn void layer(c_int layer_id) @(cname="sdtx_layer");
-fn void font(c_int font_index) @(cname="sdtx_font");
-fn void canvas(c_float w, c_float h) @(cname="sdtx_canvas");
-fn void origin(c_float x, c_float y) @(cname="sdtx_origin");
+fn void drawLayer(i32 layer_id) @(cname="sdtx_draw_layer");
+fn void contextDrawLayer(Context ctx, i32 layer_id) @(cname="sdtx_context_draw_layer");
+fn void layer(i32 layer_id) @(cname="sdtx_layer");
+fn void font(i32 font_index) @(cname="sdtx_font");
+fn void canvas(f32 w, f32 h) @(cname="sdtx_canvas");
+fn void origin(f32 x, f32 y) @(cname="sdtx_origin");
 fn void home() @(cname="sdtx_home");
-fn void pos(c_float x, c_float y) @(cname="sdtx_pos");
-fn void posX(c_float x) @(cname="sdtx_pos_x");
-fn void posY(c_float y) @(cname="sdtx_pos_y");
-fn void move(c_float dx, c_float dy) @(cname="sdtx_move");
-fn void moveX(c_float dx) @(cname="sdtx_move_x");
-fn void moveY(c_float dy) @(cname="sdtx_move_y");
+fn void pos(f32 x, f32 y) @(cname="sdtx_pos");
+fn void posX(f32 x) @(cname="sdtx_pos_x");
+fn void posY(f32 y) @(cname="sdtx_pos_y");
+fn void move(f32 dx, f32 dy) @(cname="sdtx_move");
+fn void moveX(f32 dx) @(cname="sdtx_move_x");
+fn void moveY(f32 dy) @(cname="sdtx_move_y");
 fn void crlf() @(cname="sdtx_crlf");
 fn void color3b(u8 r, u8 g, u8 b) @(cname="sdtx_color3b");
-fn void color3f(c_float r, c_float g, c_float b) @(cname="sdtx_color3f");
+fn void color3f(f32 r, f32 g, f32 b) @(cname="sdtx_color3f");
 fn void color4b(u8 r, u8 g, u8 b, u8 a) @(cname="sdtx_color4b");
-fn void color4f(c_float r, c_float g, c_float b, c_float a) @(cname="sdtx_color4f");
+fn void color4f(f32 r, f32 g, f32 b, f32 a) @(cname="sdtx_color4f");
 fn void color1i(u32 rgba) @(cname="sdtx_color1i");
 fn void putc(char c) @(cname="sdtx_putc");
 fn void puts(const char* str) @(cname="sdtx_puts");
-fn void putr(const char* str, c_int len) @(cname="sdtx_putr");
+fn void putr(const char* str, i32 len) @(cname="sdtx_putr");
 fn Range getClearedFmtBuffer() @(cname="sdtx_get_cleared_fmt_buffer");
 
 type LogItem enum i32 @(cname="sdtx_log_item_t") {
@@ -71,14 +70,14 @@ type FontDesc struct @(cname="sdtx_font_desc_t") {
 }
 
 type ContextDesc struct @(cname="sdtx_context_desc_t") {
-    c_int max_commands;
-    c_int char_buf_size;
-    c_float canvas_width;
-    c_float canvas_height;
-    c_int tab_width;
+    i32 max_commands;
+    i32 char_buf_size;
+    f32 canvas_width;
+    f32 canvas_height;
+    i32 tab_width;
     PixelFormat color_format;
     PixelFormat depth_format;
-    c_int sample_count;
+    i32 sample_count;
 }
 
 type Allocator struct @(cname="sdtx_allocator_t") {
@@ -88,8 +87,8 @@ type Allocator struct @(cname="sdtx_allocator_t") {
 }
 
 type Desc struct @(cname="sdtx_desc_t") {
-    c_int context_pool_size;
-    c_int printf_buf_size;
+    i32 context_pool_size;
+    i32 printf_buf_size;
     FontDesc[8] fonts;
     ContextDesc context;
     Allocator allocator;

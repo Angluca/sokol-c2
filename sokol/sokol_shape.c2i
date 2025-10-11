@@ -1,6 +1,5 @@
 // machine generated, do not edit
 module sokol_shape;
-import c2 local;
 
 fn Buffer buildPlane(Buffer* buf, Plane* params) @(cname="sshape_build_plane");
 fn Buffer buildBox(Buffer* buf, Box* params) @(cname="sshape_build_box");
@@ -20,12 +19,12 @@ fn VertexAttrState positionVertexAttrState() @(cname="sshape_position_vertex_att
 fn VertexAttrState normalVertexAttrState() @(cname="sshape_normal_vertex_attr_state");
 fn VertexAttrState texcoordVertexAttrState() @(cname="sshape_texcoord_vertex_attr_state");
 fn VertexAttrState colorVertexAttrState() @(cname="sshape_color_vertex_attr_state");
-fn u32 color4f(c_float r, c_float g, c_float b, c_float a) @(cname="sshape_color_4f");
-fn u32 color3f(c_float r, c_float g, c_float b) @(cname="sshape_color_3f");
+fn u32 color4f(f32 r, f32 g, f32 b, f32 a) @(cname="sshape_color_4f");
+fn u32 color3f(f32 r, f32 g, f32 b) @(cname="sshape_color_3f");
 fn u32 color4b(u8 r, u8 g, u8 b, u8 a) @(cname="sshape_color_4b");
 fn u32 color3b(u8 r, u8 g, u8 b) @(cname="sshape_color_3b");
-fn Mat4 mat4(c_float* m) @(cname="sshape_mat4");
-fn Mat4 mat4Transpose(c_float* m) @(cname="sshape_mat4_transpose");
+fn Mat4 mat4(f32* m) @(cname="sshape_mat4");
+fn Mat4 mat4Transpose(f32* m) @(cname="sshape_mat4_transpose");
 
 type Range struct @(cname="sshape_range") {
     void* ptr;
@@ -33,13 +32,13 @@ type Range struct @(cname="sshape_range") {
 }
 
 type Mat4 struct @(cname="sshape_mat4_t") {
-    c_float[4][4] m;
+    f32[4][4] m;
 }
 
 type Vertex struct @(cname="sshape_vertex_t") {
-    c_float x;
-    c_float y;
-    c_float z;
+    f32 x;
+    f32 y;
+    f32 z;
     u32 normal;
     u16 u;
     u16 v;
@@ -47,8 +46,8 @@ type Vertex struct @(cname="sshape_vertex_t") {
 }
 
 type ElementRange struct @(cname="sshape_element_range_t") {
-    c_int base_element;
-    c_int num_elements;
+    i32 base_element;
+    i32 num_elements;
 }
 
 type SizesItem struct @(cname="sshape_sizes_item_t") {
@@ -74,8 +73,8 @@ type Buffer struct @(cname="sshape_buffer_t") {
 }
 
 type Plane struct @(cname="sshape_plane_t") {
-    c_float width;
-    c_float depth;
+    f32 width;
+    f32 depth;
     u16 tiles;
     u32 color;
     bool random_colors;
@@ -84,9 +83,9 @@ type Plane struct @(cname="sshape_plane_t") {
 }
 
 type Box struct @(cname="sshape_box_t") {
-    c_float width;
-    c_float height;
-    c_float depth;
+    f32 width;
+    f32 height;
+    f32 depth;
     u16 tiles;
     u32 color;
     bool random_colors;
@@ -95,7 +94,7 @@ type Box struct @(cname="sshape_box_t") {
 }
 
 type Sphere struct @(cname="sshape_sphere_t") {
-    c_float radius;
+    f32 radius;
     u16 slices;
     u16 stacks;
     u32 color;
@@ -105,8 +104,8 @@ type Sphere struct @(cname="sshape_sphere_t") {
 }
 
 type Cylinder struct @(cname="sshape_cylinder_t") {
-    c_float radius;
-    c_float height;
+    f32 radius;
+    f32 height;
     u16 slices;
     u16 stacks;
     u32 color;
@@ -116,8 +115,8 @@ type Cylinder struct @(cname="sshape_cylinder_t") {
 }
 
 type Torus struct @(cname="sshape_torus_t") {
-    c_float radius;
-    c_float ring_radius;
+    f32 radius;
+    f32 ring_radius;
     u16 sides;
     u16 rings;
     u32 color;

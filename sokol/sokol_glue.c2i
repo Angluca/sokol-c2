@@ -1,6 +1,5 @@
 // machine generated, do not edit
 module sokol_glue;
-import c2 local;
 import sokol_gfx as sg local;
 
 fn Environment environment() @(cname="sglue_environment");

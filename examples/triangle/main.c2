@@ -1,0 +1,84 @@
+module triangle;
+import stdio local;
+import sokol_app as sapp;
+import sokol_gfx as sg;
+import sokol_glue as sglue;
+import sokol_log as slog;
+
+// application state
+type State struct {
+    sg.Pipeline pip;
+    sg.Bindings bind;
+    sg.PassAction pass_action;
+} State state;
+
+fn void init() {
+    sg.Desc desc = {
+        .environment = sglue.environment(),
+        .logger = {.func = slog.func}
+    } sg.setup(&desc);
+
+    // a vertex buffer with 3 vertices and view for binding
+    f32[] vertices = {
+        // postions         // colors
+        0.0, 0.5, 0.5,      1.0, 0.0, 0.0, 1.0,
+        0.5, 0.5, 0.5,      0.0, 1.0, 0.0, 1.0,
+       -0.5,-0.5, 0.5,      0.0, 0.0, 1.0, 1.0,
+    } sg.BufferDesc bdesc = {
+        .data = {vertices, sizeof(vertices)},
+        .label = "vertex-buffer"
+    } state.bind.vertex_buffers[0] = sg.makeBuffer(&bdesc);
+
+    // create shader from code-generated sg_shader_desc
+    sg.ShaderDesc sd = triangleShaderDesc(sg.queryBackend());
+    sg.Shader shd = sg.makeShader(&sd);
+    // create a pipeline object (default render states are fine for triangle)
+    sg.PipelineDesc pldesc = {
+        .shader = shd,
+        // if the vertex layout doesn't have gaps, don't need to provide strides and offsets
+        .layout = {
+            .attrs = {
+                [ATTR_TRIANGLE_POSITION] = { .format = sg.VertexFormat.FLOAT3 },
+                [ATTR_TRIANGLE_COLOR0] = { .format = sg.VertexFormat.FLOAT3 },
+            }
+        },
+        .label = "triangle-pipeline",
+    }
+    state.pip = sg.makePipeline(&pldesc);
+
+    // a pass action to clear framebuffer to black
+    state.pass_action.colors[0] = {
+        .load_action = sg.LoadAction.CLEAR,
+        .clear_value = {0.0, 0.0, 1.0, 1.0}
+    }
+}
+
+fn void frame() {
+    sg.Pass pass = {.action = state.pass_action, .swapchain = sglue.swapchain()}
+    sg.beginPass(&pass);
+    sg.applyPipeline(state.pip);
+    sg.applyBindings(&state.bind);
+    sg.draw(0, 3, 1);
+    sg.endPass();
+    sg.commit();
+}
+
+fn void cleanup() {
+    sg.shutdown();
+}
+
+public fn i32 main(i32 argc, char** argv) {
+    sapp.Desc desc = {
+        .init_cb = init,
+        .frame_cb = frame,
+        .cleanup_cb = cleanup,
+        .width = 640,
+        .height = 480,
+        .window_title = "Triangle",
+        .icon = {.sokol_default = true},
+        .logger = {.func = slog.func},
+    }
+    sapp.run(&desc);
+    return 0;
+}
+

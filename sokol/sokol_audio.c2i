@@ -1,18 +1,17 @@
 // machine generated, do not edit
 module sokol_audio;
-import c2 local;
 
 fn void setup(Desc* desc) @(cname="saudio_setup");
 fn void shutdown() @(cname="saudio_shutdown");
 fn bool isvalid() @(cname="saudio_isvalid");
 fn void* userdata() @(cname="saudio_userdata");
 fn Desc queryDesc() @(cname="saudio_query_desc");
-fn c_int sampleRate() @(cname="saudio_sample_rate");
-fn c_int bufferFrames() @(cname="saudio_buffer_frames");
-fn c_int channels() @(cname="saudio_channels");
+fn i32 sampleRate() @(cname="saudio_sample_rate");
+fn i32 bufferFrames() @(cname="saudio_buffer_frames");
+fn i32 channels() @(cname="saudio_channels");
 fn bool suspended() @(cname="saudio_suspended");
-fn c_int expect() @(cname="saudio_expect");
-fn c_int push(c_float* frames, c_int num_frames) @(cname="saudio_push");
+fn i32 expect() @(cname="saudio_expect");
+fn i32 push(f32* frames, i32 num_frames) @(cname="saudio_push");
 
 type LogItem enum i32 @(cname="saudio_log_item") {
     OK = 0,
@@ -56,11 +55,11 @@ type Allocator struct @(cname="saudio_allocator") {
 }
 
 type Desc struct @(cname="saudio_desc") {
-    c_int sample_rate;
-    c_int num_channels;
-    c_int buffer_frames;
-    c_int packet_frames;
-    c_int num_packets;
+    i32 sample_rate;
+    i32 num_channels;
+    i32 buffer_frames;
+    i32 packet_frames;
+    i32 num_packets;
     StreamCb stream_cb;
     StreamDataCb stream_userdata_cb;
     void* user_data;

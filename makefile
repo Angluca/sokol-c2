@@ -10,34 +10,37 @@ https://github.com/floooh/sokol
 # sokol_impl.c in LIB_DIR, build lib when hasn't libsokol.a
 LIB_SOURCE= ~/SDK/Sokols/sokol
 LIB_DIR= lib
-EXAMPLE=
-APP_NAME= clear
-APP_PATH= examples/clear
+APP_NAME= triangle
+APP_DIR= examples/triangle
 OS= macos
-# select OS: macos/windows/linux/wasm or null
+# OS = macos/windows/linux/wasm or null
 #=================================
 OBJS= $(LIB_DIR)/sokol_impl.o
 SOKOLIB= $(LIB_DIR)/libsokol.a
 CFLAGS+= -I $(LIB_SOURCE)
 LDFLAGS+= -L $(LIB_DIR) -lsokol
 #------------------------------------
+ifdef example
+APP_NAME= $(example)
+APP_DIR= examples/$(example)
+endif
 APP=  $(APP_NAME)
 CGEN= output/$(APP_NAME)/cgen
-ifneq ($(wildcard $(APP_PATH)),)
-APP=  $(APP_PATH)/$(APP_NAME)
-CGEN= $(APP_PATH)/output/$(APP_NAME)/cgen
+ifneq ($(wildcard $(APP_DIR)),)
+APP=  $(APP_DIR)/$(APP_NAME)
+CGEN= $(APP_DIR)/output/$(APP_NAME)/cgen
 endif #==============================
 ifeq ($(OS),macos) # ------ macos
 CFLAGS+= -x objective-c -DSOKOL_GLCORE  # -arch x86_64
 FRAMEWORKS= -framework Cocoa \
-             -framework QuartzCore \
-             -framework OpenGL \
-			 -framework AudioToolbox \
-			 -framework AVFoundation \
-			 #-framework Metal \
-			 -framework MetalKit \
-			 #-framework IOKit \
-			 #-framework Foundation
+			-framework QuartzCore \
+			-framework OpenGL \
+			-framework AudioToolbox \
+			-framework AVFoundation \
+			#-framework Metal \
+			-framework MetalKit \
+			#-framework IOKit \
+			#-framework Foundation
 #------------------------------------
 BUILD= $(CGEN)/build
 LDFLAGS+= $(FRAMEWORKS)
@@ -75,24 +78,45 @@ getlib:
 ifeq ($(wildcard $(SOKOLIB)),)
 	@make $(SOKOLIB)
 endif #==============================
+	#$(eval $(call))
  
 cc:
-	$(info -------- system: $(OS) --------------)
-ifneq ($(wildcard $(APP_PATH)),)
-	c2c -d ./$(APP_PATH)
+	$(info -------- system: $(OS) --------)
+ifneq ($(wildcard $(APP_DIR)),)
+	c2c -d ./$(APP_DIR)
 else
 	c2c 
+endif #==============================
+
+ifneq ($(wildcard $(APP).glsl),)
+	make build_glsl
+endif #==============================
+
+SOKOL_EXISTS := $(shell command -v sokol-shdc 2>/dev/null) 
+build_glsl:
+ifneq ($(wildcard $(SOKOL_EXISTS)),)
+ifdef glsl
+	$(call cglsl,./$(APP_DIR)/$(glsl).glsl,glsl410)
+else
+	$(call cglsl,./$(APP).glsl,glsl410)
+endif
 endif #==============================
 
 run: 
 	@make && ./$(APP)
 
 clean:
-	rm -rf ./$(APP) ./$(APP_PATH)/output ./$(OBJS)
+	rm -rf ./$(APP) ./$(APP_DIR)/output ./$(OBJS)
 
 cleanall:
-	rm -rf ./$(APP) ./$(APP_PATH)/output ./$(OBJS)
+	make clean
 	@rm -i ./$(SOKOLIB) 
 	$(info "--- if you want del libsokol.a press [y] ---")
- 
+
+define cglsl
+	$(info ------ build glsl: $1 ------)
+	sokol-shdc -i $1 -o ./$1.c2 -l $2 -f sokol_c2
+endef
+
 .PHONY: all clean cleanall cc run getlib
+

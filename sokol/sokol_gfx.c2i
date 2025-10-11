@@ -1,6 +1,5 @@
 // machine generated, do not edit
 module sokol_gfx;
-import c2 local;
 
 fn void setup(Desc* desc) @(cname="sg_setup");
 fn void shutdown() @(cname="sg_shutdown");
@@ -24,20 +23,20 @@ fn void destroyPipeline(Pipeline pip) @(cname="sg_destroy_pipeline");
 fn void destroyView(View view) @(cname="sg_destroy_view");
 fn void updateBuffer(Buffer buf, Range* data) @(cname="sg_update_buffer");
 fn void updateImage(Image img, ImageData* data) @(cname="sg_update_image");
-fn c_int appendBuffer(Buffer buf, Range* data) @(cname="sg_append_buffer");
+fn i32 appendBuffer(Buffer buf, Range* data) @(cname="sg_append_buffer");
 fn bool queryBufferOverflow(Buffer buf) @(cname="sg_query_buffer_overflow");
 fn bool queryBufferWillOverflow(Buffer buf, usize size) @(cname="sg_query_buffer_will_overflow");
 fn void beginPass(Pass* pass) @(cname="sg_begin_pass");
-fn void applyViewport(c_int x, c_int y, c_int width, c_int height, bool origin_top_left) @(cname="sg_apply_viewport");
-fn void applyViewportf(c_float x, c_float y, c_float width, c_float height, bool origin_top_left) @(cname="sg_apply_viewportf");
-fn void applyScissorRect(c_int x, c_int y, c_int width, c_int height, bool origin_top_left) @(cname="sg_apply_scissor_rect");
-fn void applyScissorRectf(c_float x, c_float y, c_float width, c_float height, bool origin_top_left) @(cname="sg_apply_scissor_rectf");
+fn void applyViewport(i32 x, i32 y, i32 width, i32 height, bool origin_top_left) @(cname="sg_apply_viewport");
+fn void applyViewportf(f32 x, f32 y, f32 width, f32 height, bool origin_top_left) @(cname="sg_apply_viewportf");
+fn void applyScissorRect(i32 x, i32 y, i32 width, i32 height, bool origin_top_left) @(cname="sg_apply_scissor_rect");
+fn void applyScissorRectf(f32 x, f32 y, f32 width, f32 height, bool origin_top_left) @(cname="sg_apply_scissor_rectf");
 fn void applyPipeline(Pipeline pip) @(cname="sg_apply_pipeline");
 fn void applyBindings(Bindings* bindings) @(cname="sg_apply_bindings");
-fn void applyUniforms(c_int ub_slot, Range* data) @(cname="sg_apply_uniforms");
-fn void draw(c_int base_element, c_int num_elements, c_int num_instances) @(cname="sg_draw");
-fn void drawEx(c_int base_element, c_int num_elements, c_int num_instances, c_int base_vertex, c_int base_instance) @(cname="sg_draw_ex");
-fn void dispatch(c_int num_groups_x, c_int num_groups_y, c_int num_groups_z) @(cname="sg_dispatch");
+fn void applyUniforms(i32 ub_slot, Range* data) @(cname="sg_apply_uniforms");
+fn void draw(i32 base_element, i32 num_elements, i32 num_instances) @(cname="sg_draw");
+fn void drawEx(i32 base_element, i32 num_elements, i32 num_instances, i32 base_vertex, i32 base_instance) @(cname="sg_draw_ex");
+fn void dispatch(i32 num_groups_x, i32 num_groups_y, i32 num_groups_z) @(cname="sg_dispatch");
 fn void endPass() @(cname="sg_end_pass");
 fn void commit() @(cname="sg_commit");
 fn Desc queryDesc() @(cname="sg_query_desc");
@@ -45,8 +44,8 @@ fn Backend queryBackend() @(cname="sg_query_backend");
 fn Features queryFeatures() @(cname="sg_query_features");
 fn Limits queryLimits() @(cname="sg_query_limits");
 fn PixelformatInfo queryPixelformat(PixelFormat fmt) @(cname="sg_query_pixelformat");
-fn c_int queryRowPitch(PixelFormat fmt, c_int width, c_int row_align_bytes) @(cname="sg_query_row_pitch");
-fn c_int querySurfacePitch(PixelFormat fmt, c_int width, c_int height, c_int row_align_bytes) @(cname="sg_query_surface_pitch");
+fn i32 queryRowPitch(PixelFormat fmt, i32 width, i32 row_align_bytes) @(cname="sg_query_row_pitch");
+fn i32 querySurfacePitch(PixelFormat fmt, i32 width, i32 height, i32 row_align_bytes) @(cname="sg_query_surface_pitch");
 fn ResourceState queryBufferState(Buffer buf) @(cname="sg_query_buffer_state");
 fn ResourceState queryImageState(Image img) @(cname="sg_query_image_state");
 fn ResourceState querySamplerState(Sampler smp) @(cname="sg_query_sampler_state");
@@ -74,13 +73,13 @@ fn ViewDesc queryViewDefaults(ViewDesc* desc) @(cname="sg_query_view_defaults");
 fn usize queryBufferSize(Buffer buf) @(cname="sg_query_buffer_size");
 fn BufferUsage queryBufferUsage(Buffer buf) @(cname="sg_query_buffer_usage");
 fn ImageType queryImageType(Image img) @(cname="sg_query_image_type");
-fn c_int queryImageWidth(Image img) @(cname="sg_query_image_width");
-fn c_int queryImageHeight(Image img) @(cname="sg_query_image_height");
-fn c_int queryImageNumSlices(Image img) @(cname="sg_query_image_num_slices");
-fn c_int queryImageNumMipmaps(Image img) @(cname="sg_query_image_num_mipmaps");
+fn i32 queryImageWidth(Image img) @(cname="sg_query_image_width");
+fn i32 queryImageHeight(Image img) @(cname="sg_query_image_height");
+fn i32 queryImageNumSlices(Image img) @(cname="sg_query_image_num_slices");
+fn i32 queryImageNumMipmaps(Image img) @(cname="sg_query_image_num_mipmaps");
 fn PixelFormat queryImagePixelformat(Image img) @(cname="sg_query_image_pixelformat");
 fn ImageUsage queryImageUsage(Image img) @(cname="sg_query_image_usage");
-fn c_int queryImageSampleCount(Image img) @(cname="sg_query_image_sample_count");
+fn i32 queryImageSampleCount(Image img) @(cname="sg_query_image_sample_count");
 fn ViewType queryViewType(View view) @(cname="sg_query_view_type");
 fn Image queryViewImage(View view) @(cname="sg_query_view_image");
 fn Buffer queryViewBuffer(View view) @(cname="sg_query_view_buffer");
@@ -197,10 +196,10 @@ const usize MAX_PORTABLE_STORAGEBUFFER_BINDINGS_PER_STAGE = 8;
 const usize MAX_PORTABLE_STORAGEIMAGE_BINDINGS_PER_STAGE = 4;
 
 type Color struct @(cname="sg_color") {
-    c_float r;
-    c_float g;
-    c_float b;
-    c_float a;
+    f32 r;
+    f32 g;
+    f32 b;
+    f32 a;
 }
 
 type Backend enum i32 @(cname="sg_backend") {
@@ -296,7 +295,7 @@ type PixelformatInfo struct @(cname="sg_pixelformat_info") {
     bool compressed;
     bool read;
     bool write;
-    c_int bytes_per_pixel;
+    i32 bytes_per_pixel;
 }
 
 type Features struct @(cname="sg_features") {
@@ -313,19 +312,19 @@ type Features struct @(cname="sg_features") {
 }
 
 type Limits struct @(cname="sg_limits") {
-    c_int max_image_size_2d;
-    c_int max_image_size_cube;
-    c_int max_image_size_3d;
-    c_int max_image_size_array;
-    c_int max_image_array_layers;
-    c_int max_vertex_attrs;
-    c_int max_color_attachments;
-    c_int max_texture_bindings_per_stage;
-    c_int max_storage_buffer_bindings_per_stage;
-    c_int max_storage_image_bindings_per_stage;
-    c_int gl_max_vertex_uniform_components;
-    c_int gl_max_combined_texture_image_units;
-    c_int d3d11_max_unordered_access_views;
+    i32 max_image_size_2d;
+    i32 max_image_size_cube;
+    i32 max_image_size_3d;
+    i32 max_image_size_array;
+    i32 max_image_array_layers;
+    i32 max_vertex_attrs;
+    i32 max_color_attachments;
+    i32 max_texture_bindings_per_stage;
+    i32 max_storage_buffer_bindings_per_stage;
+    i32 max_storage_image_bindings_per_stage;
+    i32 gl_max_vertex_uniform_components;
+    i32 gl_max_combined_texture_image_units;
+    i32 d3d11_max_unordered_access_views;
 }
 
 type ResourceState enum u32 @(cname="sg_resource_state") {
@@ -578,7 +577,7 @@ type ColorAttachmentAction struct @(cname="sg_color_attachment_action") {
 type DepthAttachmentAction struct @(cname="sg_depth_attachment_action") {
     LoadAction load_action;
     StoreAction store_action;
-    c_float clear_value;
+    f32 clear_value;
 }
 
 type StencilAttachmentAction struct @(cname="sg_stencil_attachment_action") {
@@ -616,9 +615,9 @@ type GlSwapchain struct @(cname="sg_gl_swapchain") {
 }
 
 type Swapchain struct @(cname="sg_swapchain") {
-    c_int width;
-    c_int height;
-    c_int sample_count;
+    i32 width;
+    i32 height;
+    i32 sample_count;
     PixelFormat color_format;
     PixelFormat depth_format;
     MetalSwapchain metal;
@@ -646,9 +645,9 @@ type Pass struct @(cname="sg_pass") {
 type Bindings struct @(cname="sg_bindings") {
     u32 _start_canary;
     Buffer[8] vertex_buffers;
-    c_int[8] vertex_buffer_offsets;
+    i32[8] vertex_buffer_offsets;
     Buffer index_buffer;
-    c_int index_buffer_offset;
+    i32 index_buffer_offset;
     View[32] views;
     Sampler[12] samplers;
     u32 _end_canary;
@@ -704,12 +703,12 @@ type ImageDesc struct @(cname="sg_image_desc") {
     u32 _start_canary;
     ImageType type_;
     ImageUsage usage;
-    c_int width;
-    c_int height;
-    c_int num_slices;
-    c_int num_mipmaps;
+    i32 width;
+    i32 height;
+    i32 num_slices;
+    i32 num_mipmaps;
     PixelFormat pixel_format;
-    c_int sample_count;
+    i32 sample_count;
     ImageData data;
     const char* label;
     u32[2] gl_textures;
@@ -728,8 +727,8 @@ type SamplerDesc struct @(cname="sg_sampler_desc") {
     Wrap wrap_u;
     Wrap wrap_v;
     Wrap wrap_w;
-    c_float min_lod;
-    c_float max_lod;
+    f32 min_lod;
+    f32 max_lod;
     BorderColor border_color;
     CompareFunc compare;
     u32 max_anisotropy;
@@ -839,9 +838,9 @@ type ShaderTextureSamplerPair struct @(cname="sg_shader_texture_sampler_pair") {
 }
 
 type MtlShaderThreadsPerThreadgroup struct @(cname="sg_mtl_shader_threads_per_threadgroup") {
-    c_int x;
-    c_int y;
-    c_int z;
+    i32 x;
+    i32 y;
+    i32 z;
 }
 
 type ShaderDesc struct @(cname="sg_shader_desc") {
@@ -860,14 +859,14 @@ type ShaderDesc struct @(cname="sg_shader_desc") {
 }
 
 type VertexBufferLayoutState struct @(cname="sg_vertex_buffer_layout_state") {
-    c_int stride;
+    i32 stride;
     VertexStep step_func;
-    c_int step_rate;
+    i32 step_rate;
 }
 
 type VertexAttrState struct @(cname="sg_vertex_attr_state") {
-    c_int buffer_index;
-    c_int offset;
+    i32 buffer_index;
+    i32 offset;
     VertexFormat format;
 }
 
@@ -896,9 +895,9 @@ type DepthState struct @(cname="sg_depth_state") {
     PixelFormat pixel_format;
     CompareFunc compare;
     bool write_enabled;
-    c_float bias;
-    c_float bias_slope_scale;
-    c_float bias_clamp;
+    f32 bias;
+    f32 bias_slope_scale;
+    f32 bias_clamp;
 }
 
 type BlendState struct @(cname="sg_blend_state") {
@@ -924,13 +923,13 @@ type PipelineDesc struct @(cname="sg_pipeline_desc") {
     VertexLayoutState layout;
     DepthState depth;
     StencilState stencil;
-    c_int color_count;
+    i32 color_count;
     ColorTargetState[8] colors;
     PrimitiveType primitive_type;
     IndexType index_type;
     CullMode cull_mode;
     FaceWinding face_winding;
-    c_int sample_count;
+    i32 sample_count;
     Color blend_color;
     bool alpha_to_coverage_enabled;
     const char* label;
@@ -939,18 +938,18 @@ type PipelineDesc struct @(cname="sg_pipeline_desc") {
 
 type BufferViewDesc struct @(cname="sg_buffer_view_desc") {
     Buffer buffer;
-    c_int offset;
+    i32 offset;
 }
 
 type ImageViewDesc struct @(cname="sg_image_view_desc") {
     Image image;
-    c_int mip_level;
-    c_int slice;
+    i32 mip_level;
+    i32 slice;
 }
 
 type TextureViewRange struct @(cname="sg_texture_view_range") {
-    c_int base;
-    c_int count;
+    i32 base;
+    i32 count;
 }
 
 type TextureViewDesc struct @(cname="sg_texture_view_desc") {
@@ -981,17 +980,17 @@ type BufferInfo struct @(cname="sg_buffer_info") {
     SlotInfo slot;
     u32 update_frame_index;
     u32 append_frame_index;
-    c_int append_pos;
+    i32 append_pos;
     bool append_overflow;
-    c_int num_slots;
-    c_int active_slot;
+    i32 num_slots;
+    i32 active_slot;
 }
 
 type ImageInfo struct @(cname="sg_image_info") {
     SlotInfo slot;
     u32 upd_frame_index;
-    c_int num_slots;
-    c_int active_slot;
+    i32 num_slots;
+    i32 active_slot;
 }
 
 type SamplerInfo struct @(cname="sg_sampler_info") {
@@ -1622,7 +1621,7 @@ type LogItem enum i32 @(cname="sg_log_item") {
 type EnvironmentDefaults struct @(cname="sg_environment_defaults") {
     PixelFormat color_format;
     PixelFormat depth_format;
-    c_int sample_count;
+    i32 sample_count;
 }
 
 type MetalEnvironment struct @(cname="sg_metal_environment") {
@@ -1663,21 +1662,21 @@ type Logger struct @(cname="sg_logger") {
 
 type Desc struct @(cname="sg_desc") {
     u32 _start_canary;
-    c_int buffer_pool_size;
-    c_int image_pool_size;
-    c_int sampler_pool_size;
-    c_int shader_pool_size;
-    c_int pipeline_pool_size;
-    c_int view_pool_size;
-    c_int uniform_buffer_size;
-    c_int max_commit_listeners;
+    i32 buffer_pool_size;
+    i32 image_pool_size;
+    i32 sampler_pool_size;
+    i32 shader_pool_size;
+    i32 pipeline_pool_size;
+    i32 view_pool_size;
+    i32 uniform_buffer_size;
+    i32 max_commit_listeners;
     bool disable_validation;
     bool enforce_portable_limits;
     bool d3d11_shader_debugging;
     bool mtl_force_managed_storage_mode;
     bool mtl_use_command_buffer_with_retained_references;
     bool wgpu_disable_bindgroups_cache;
-    c_int wgpu_bindgroups_cache_size;
+    i32 wgpu_bindgroups_cache_size;
     Allocator allocator;
     Logger logger;
     Environment environment;
@@ -1720,12 +1719,12 @@ type D3d11ViewInfo struct @(cname="sg_d3d11_view_info") {
 
 type MtlBufferInfo struct @(cname="sg_mtl_buffer_info") {
     void*[2] buf;
-    c_int active_slot;
+    i32 active_slot;
 }
 
 type MtlImageInfo struct @(cname="sg_mtl_image_info") {
     void*[2] tex;
-    c_int active_slot;
+    i32 active_slot;
 }
 
 type MtlSamplerInfo struct @(cname="sg_mtl_sampler_info") {
@@ -1773,13 +1772,13 @@ type WgpuViewInfo struct @(cname="sg_wgpu_view_info") {
 
 type GlBufferInfo struct @(cname="sg_gl_buffer_info") {
     u32[2] buf;
-    c_int active_slot;
+    i32 active_slot;
 }
 
 type GlImageInfo struct @(cname="sg_gl_image_info") {
     u32[2] tex;
     u32 tex_target;
-    c_int active_slot;
+    i32 active_slot;
 }
 
 type GlSamplerInfo struct @(cname="sg_gl_sampler_info") {

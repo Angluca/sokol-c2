@@ -1,17 +1,16 @@
 // machine generated, do not edit
 module sokol_app;
-import c2 local;
 
 fn bool isvalid() @(cname="sapp_isvalid");
-fn c_int width() @(cname="sapp_width");
-fn c_float widthf() @(cname="sapp_widthf");
-fn c_int height() @(cname="sapp_height");
-fn c_float heightf() @(cname="sapp_heightf");
-fn c_int colorFormat() @(cname="sapp_color_format");
-fn c_int depthFormat() @(cname="sapp_depth_format");
-fn c_int sampleCount() @(cname="sapp_sample_count");
+fn i32 width() @(cname="sapp_width");
+fn f32 widthf() @(cname="sapp_widthf");
+fn i32 height() @(cname="sapp_height");
+fn f32 heightf() @(cname="sapp_heightf");
+fn i32 colorFormat() @(cname="sapp_color_format");
+fn i32 depthFormat() @(cname="sapp_depth_format");
+fn i32 sampleCount() @(cname="sapp_sample_count");
 fn bool highDpi() @(cname="sapp_high_dpi");
-fn c_float dpiScale() @(cname="sapp_dpi_scale");
+fn f32 dpiScale() @(cname="sapp_dpi_scale");
 fn void showKeyboard(bool show) @(cname="sapp_show_keyboard");
 fn bool keyboardShown() @(cname="sapp_keyboard_shown");
 fn bool isFullscreen() @(cname="sapp_is_fullscreen");
@@ -31,18 +30,18 @@ fn void cancelQuit() @(cname="sapp_cancel_quit");
 fn void quit() @(cname="sapp_quit");
 fn void consumeEvent() @(cname="sapp_consume_event");
 fn u64 frameCount() @(cname="sapp_frame_count");
-fn c_double frameDuration() @(cname="sapp_frame_duration");
+fn f64 frameDuration() @(cname="sapp_frame_duration");
 fn void setClipboardString(const char* str) @(cname="sapp_set_clipboard_string");
 fn const char* getClipboardString() @(cname="sapp_get_clipboard_string");
 fn void setWindowTitle(const char* str) @(cname="sapp_set_window_title");
 fn void setIcon(IconDesc* icon_desc) @(cname="sapp_set_icon");
-fn c_int getNumDroppedFiles() @(cname="sapp_get_num_dropped_files");
-fn const char* getDroppedFilePath(c_int index) @(cname="sapp_get_dropped_file_path");
+fn i32 getNumDroppedFiles() @(cname="sapp_get_num_dropped_files");
+fn const char* getDroppedFilePath(i32 index) @(cname="sapp_get_dropped_file_path");
 fn void run(Desc* desc) @(cname="sapp_run");
 fn void* eglGetDisplay() @(cname="sapp_egl_get_display");
 fn void* eglGetContext() @(cname="sapp_egl_get_context");
 fn void html5AskLeaveSite(bool ask) @(cname="sapp_html5_ask_leave_site");
-fn u32 html5GetDroppedFileSize(c_int index) @(cname="sapp_html5_get_dropped_file_size");
+fn u32 html5GetDroppedFileSize(i32 index) @(cname="sapp_html5_get_dropped_file_size");
 fn void html5FetchDroppedFile(Html5FetchRequest* request) @(cname="sapp_html5_fetch_dropped_file");
 fn void* metalGetDevice() @(cname="sapp_metal_get_device");
 fn void* metalGetCurrentDrawable() @(cname="sapp_metal_get_current_drawable");
@@ -62,8 +61,8 @@ fn void* wgpuGetRenderView() @(cname="sapp_wgpu_get_render_view");
 fn void* wgpuGetResolveView() @(cname="sapp_wgpu_get_resolve_view");
 fn void* wgpuGetDepthStencilView() @(cname="sapp_wgpu_get_depth_stencil_view");
 fn u32 glGetFramebuffer() @(cname="sapp_gl_get_framebuffer");
-fn c_int glGetMajorVersion() @(cname="sapp_gl_get_major_version");
-fn c_int glGetMinorVersion() @(cname="sapp_gl_get_minor_version");
+fn i32 glGetMajorVersion() @(cname="sapp_gl_get_major_version");
+fn i32 glGetMinorVersion() @(cname="sapp_gl_get_minor_version");
 fn bool glIsGles() @(cname="sapp_gl_is_gles");
 fn void* x11GetWindow() @(cname="sapp_x11_get_window");
 fn void* x11GetDisplay() @(cname="sapp_x11_get_display");
@@ -234,9 +233,9 @@ type AndroidTooltype enum i32 @(cname="sapp_android_tooltype") {
 }
 
 type Touchpoint struct @(cname="sapp_touchpoint") {
-    c_uint* identifier;
-    c_float pos_x;
-    c_float pos_y;
+    u32* identifier;
+    f32 pos_x;
+    f32 pos_y;
     AndroidTooltype android_tooltype;
     bool changed;
 }
@@ -264,18 +263,18 @@ type Event struct @(cname="sapp_event") {
     bool key_repeat;
     u32 modifiers;
     Mousebutton mouse_button;
-    c_float mouse_x;
-    c_float mouse_y;
-    c_float mouse_dx;
-    c_float mouse_dy;
-    c_float scroll_x;
-    c_float scroll_y;
-    c_int num_touches;
+    f32 mouse_x;
+    f32 mouse_y;
+    f32 mouse_dx;
+    f32 mouse_dy;
+    f32 scroll_x;
+    f32 scroll_y;
+    i32 num_touches;
     Touchpoint[8] touches;
-    c_int window_width;
-    c_int window_height;
-    c_int framebuffer_width;
-    c_int framebuffer_height;
+    i32 window_width;
+    i32 window_height;
+    i32 framebuffer_width;
+    i32 framebuffer_height;
 }
 
 type Range struct @(cname="sapp_range") {
@@ -284,10 +283,10 @@ type Range struct @(cname="sapp_range") {
 }
 
 type ImageDesc struct @(cname="sapp_image_desc") {
-    c_int width;
-    c_int height;
-    c_int cursor_hotspot_x;
-    c_int cursor_hotspot_y;
+    i32 width;
+    i32 height;
+    i32 cursor_hotspot_x;
+    i32 cursor_hotspot_y;
     Range pixels;
 }
 
@@ -424,24 +423,24 @@ type Desc struct @(cname="sapp_desc") {
     DataCb frame_userdata_cb;
     DataCb cleanup_userdata_cb;
     EventDataCb event_userdata_cb;
-    c_int width;
-    c_int height;
-    c_int sample_count;
-    c_int swap_interval;
+    i32 width;
+    i32 height;
+    i32 sample_count;
+    i32 swap_interval;
     bool high_dpi;
     bool fullscreen;
     bool alpha;
     const char* window_title;
     bool enable_clipboard;
-    c_int clipboard_size;
+    i32 clipboard_size;
     bool enable_dragndrop;
-    c_int max_dropped_files;
-    c_int max_dropped_file_path_length;
+    i32 max_dropped_files;
+    i32 max_dropped_file_path_length;
     IconDesc icon;
     Allocator allocator;
     Logger logger;
-    c_int gl_major_version;
-    c_int gl_minor_version;
+    i32 gl_major_version;
+    i32 gl_minor_version;
     bool win32_console_utf8;
     bool win32_console_create;
     bool win32_console_attach;
@@ -470,14 +469,14 @@ type Html5FetchError enum i32 @(cname="sapp_html5_fetch_error") {
 type Html5FetchResponse struct @(cname="sapp_html5_fetch_response") {
     bool succeeded;
     Html5FetchError error_code;
-    c_int file_index;
+    i32 file_index;
     Range data;
     Range buffer;
     void* user_data;
 }
 
 type Html5FetchRequest struct @(cname="sapp_html5_fetch_request") {
-    c_int dropped_file_index;
+    i32 dropped_file_index;
     ResponseCb callback;
     Range buffer;
     void* user_data;
