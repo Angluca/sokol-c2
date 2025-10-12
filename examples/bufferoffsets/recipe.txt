@@ -1,0 +1,10 @@
+plugin deps_generator [all-targets files private]
+plugin refs_generator [all-targets]
+
+executable bufferoffsets
+    $warnings no-unused
+    $backend c no-build
+    $use sokol static
+    main.c2
+    bufferoffsets.glsl.c2
+end
