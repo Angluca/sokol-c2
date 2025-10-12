@@ -15,40 +15,50 @@ type State struct {
 fn void init() {
     sg.Desc desc = {
         .environment = sglue.environment(),
-        .logger = {.func = slog.func}
+        //.logger = {.func = slog.func}
     } sg.setup(&desc);
 
-    // a vertex buffer with 3 vertices and view for binding
+    // a vertex buffer
     f32[] vertices = {
         // postions         // colors
-        0.0, 0.5, 0.5,      1.0, 0.0, 0.0, 1.0,
-        0.5,-0.5, 0.5,      0.0, 1.0, 0.0, 1.0,
-       -0.5,-0.5, 0.5,      0.0, 0.0, 1.0, 1.0,
-    } sg.BufferDesc bd = {
+       -0.5, 0.5, 0.5,      1.0, 0.0, 0.0, 1.0,
+        0.5, 0.5, 0.5,      0.0, 1.0, 0.0, 1.0,
+        0.5,-0.5, 0.5,      0.0, 0.0, 1.0, 1.0,
+       -0.5,-0.5, 0.5,      0.0, 1.0, 0.0, 1.0,
+    } sg.BufferDesc vbd = {
         .data = {.ptr = &vertices, .size = sizeof(vertices)},
-        .label = "vertex-buffer"
-    } state.bind.vertex_buffers[0] = sg.makeBuffer(&bd);
+        .label = "quad-vertices"
+    } state.bind.vertex_buffers[0] = sg.makeBuffer(&vbd);
 
-    // create shader from code-generated sg_shader_desc
-    sg.ShaderDesc sd = triangleShaderDesc(sg.queryBackend());
+    // an index buffer with 2 triangles
+    u16[] indices = {0, 1, 2,  0, 2, 3}
+    sg.BufferDesc ibd = {}
+    ibd.usage.index_buffer = true;
+    ibd.data = {indices, sizeof(indices)}
+    ibd.label = "quad-indices";
+    state.bind.index_buffer = sg.makeBuffer(&ibd);
+
+    // a shader (use separate shader sources here
+    sg.ShaderDesc sd = quadShaderDesc(sg.queryBackend());
     sg.Shader shd = sg.makeShader(&sd);
-    // create a pipeline object (default render states are fine for triangle)
+
+    // a pipeline state object
     sg.PipelineDesc pd = {
         .shader = shd,
-        // if the vertex layout doesn't have gaps, don't need to provide strides and offsets
+        .index_type = UINT16,
         .layout = {
             .attrs = {
-                [ATTR_TRIANGLE_POSITION] = { .format = sg.VertexFormat.FLOAT3 },
-                [ATTR_TRIANGLE_COLOR0] = { .format = FLOAT4 },
+                [ATTR_QUAD_POSITION] = { .format = sg.VertexFormat.FLOAT3 },
+                [ATTR_QUAD_COLOR0] = { .format = FLOAT4 },
             }
         },
-        .label = "triangle-pipeline",
+        .label = "quad-pipeline",
     }
     state.pip = sg.makePipeline(&pd);
 
     // a pass action to clear framebuffer to black
     state.pass_action.colors[0] = {
-        .load_action = sg.LoadAction.CLEAR,
+        .load_action = CLEAR,
         .clear_value = {0.0, 0.0, 1.0, 1.0}
     }
 }
@@ -58,7 +68,7 @@ fn void frame() {
     sg.beginPass(&pass);
     sg.applyPipeline(state.pip);
     sg.applyBindings(&state.bind);
-    sg.draw(0, 3, 1);
+    sg.draw(0, 6, 1);
     sg.endPass();
     sg.commit();
 }
@@ -74,9 +84,9 @@ public fn i32 main(i32 argc, char** argv) {
         .cleanup_cb = cleanup,
         .width = 640,
         .height = 480,
-        .window_title = "triangle",
+        .window_title = "quad",
         .icon = {.sokol_default = true},
-        .logger = {.func = slog.func},
+        //.logger = {.func = slog.func},
     }
     sapp.run(&desc);
     return 0;

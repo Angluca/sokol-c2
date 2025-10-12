@@ -1,4 +1,4 @@
-module triangle;
+module example;
 import sokol_gfx as sg;
 /*
     #version:1# (machine generated, don't edit!)

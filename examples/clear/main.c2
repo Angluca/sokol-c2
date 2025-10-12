@@ -1,4 +1,4 @@
-module clear;
+module example;
 import stdio local;
 import sokol_app as sapp;
 import sokol_gfx as sg;

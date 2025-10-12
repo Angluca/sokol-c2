@@ -1,4 +1,4 @@
-@header module triangle;
+@header module example;
 @vs vs
 
 const vec4 colors[3] = {
