@@ -10,7 +10,7 @@ https://github.com/floooh/sokol
 # sokol_impl.c in LIB_DIR, build lib when hasn't libsokol.a
 LIB_SOURCE= ~/SDK/Sokols/sokol
 LIB_DIR= lib
-APP_NAME= quad
+APP_NAME= cube
 APP_DIR= examples/$(APP_NAME)
 OS= macos
 # OS = macos/windows/linux/wasm or null

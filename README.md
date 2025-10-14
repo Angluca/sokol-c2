@@ -17,6 +17,7 @@ make example=triangle run
 make example=triangle-bufferless run
 make example=quad run
 make example=bufferoffsets run
+make example=cube run
 ```
 > If build echo ```max char 31 error```,  
 > modify ```c2compiler/ast_utils/constants.c2:line 21: MaxIdentifierLen = 96;```  

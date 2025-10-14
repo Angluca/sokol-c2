@@ -1,0 +1,151 @@
+module example;
+import sokol_math local;
+import sokol_app as sapp;
+import sokol_gfx as sg;
+import sokol_glue as sglue;
+import sokol_log as slog;
+
+// application state
+type State struct {
+    f32 rx, ry;
+    sg.Pipeline pip;
+    sg.Bindings bind;
+} State state;
+
+fn void init() {
+    sg.Desc desc = {
+        .environment = sglue.environment(),
+        //.logger = {.func = slog.func}
+    } sg.setup(&desc);
+
+    // cube vertex buffer
+    f32[] vertices = {
+        // postions         // colors
+        -1.0, -1.0, -1.0,   1.0, 0.0, 0.0, 1.0,
+         1.0, -1.0, -1.0,   1.0, 0.0, 0.0, 1.0,
+         1.0,  1.0, -1.0,   1.0, 0.0, 0.0, 1.0,
+        -1.0,  1.0, -1.0,   1.0, 0.0, 0.0, 1.0,
+
+        -1.0, -1.0,  1.0,   0.0, 1.0, 0.0, 1.0,
+         1.0, -1.0,  1.0,   0.0, 1.0, 0.0, 1.0,
+         1.0,  1.0,  1.0,   0.0, 1.0, 0.0, 1.0,
+        -1.0,  1.0,  1.0,   0.0, 1.0, 0.0, 1.0,
+
+        -1.0, -1.0, -1.0,   0.0, 0.0, 1.0, 1.0,
+        -1.0,  1.0, -1.0,   0.0, 0.0, 1.0, 1.0,
+        -1.0,  1.0,  1.0,   0.0, 0.0, 1.0, 1.0,
+        -1.0, -1.0,  1.0,   0.0, 0.0, 1.0, 1.0,
+
+        1.0, -1.0, -1.0,    1.0, 0.5, 0.0, 1.0,
+        1.0,  1.0, -1.0,    1.0, 0.5, 0.0, 1.0,
+        1.0,  1.0,  1.0,    1.0, 0.5, 0.0, 1.0,
+        1.0, -1.0,  1.0,    1.0, 0.5, 0.0, 1.0,
+
+        -1.0, -1.0, -1.0,   0.0, 0.5, 1.0, 1.0,
+        -1.0, -1.0,  1.0,   0.0, 0.5, 1.0, 1.0,
+         1.0, -1.0,  1.0,   0.0, 0.5, 1.0, 1.0,
+         1.0, -1.0, -1.0,   0.0, 0.5, 1.0, 1.0,
+
+        -1.0,  1.0, -1.0,   1.0, 0.0, 0.5, 1.0,
+        -1.0,  1.0,  1.0,   1.0, 0.0, 0.5, 1.0,
+         1.0,  1.0,  1.0,   1.0, 0.0, 0.5, 1.0,
+         1.0,  1.0, -1.0,   1.0, 0.0, 0.5, 1.0
+    } sg.BufferDesc vbd = {
+        .data = {.ptr = &vertices, .size = sizeof(vertices)},
+        .label = "cube-vertices"
+    } state.bind.vertex_buffers[0] = sg.makeBuffer(&vbd);
+
+    // create an index buffer for the cube
+    u16[] indices = {
+        0, 1, 2,  0, 2, 3,
+        6, 5, 4,  7, 6, 4,
+        8, 9, 10,  8, 10, 11,
+        14, 13, 12,  15, 14, 12,
+        16, 17, 18,  16, 18, 19,
+        22, 21, 20,  23, 22, 20
+    }
+    sg.BufferDesc ibd = {}
+    ibd.usage.index_buffer = true;
+    ibd.data = {&indices, sizeof(indices)}
+    ibd.label = "cube-indices";
+    state.bind.index_buffer = sg.makeBuffer(&ibd);
+
+    // create shader
+    sg.ShaderDesc sd = cubeShaderDesc(sg.queryBackend());
+    sg.Shader shd = sg.makeShader(&sd);
+    // create pipeline object
+    sg.PipelineDesc pd = {
+        .layout = {
+            .buffers = {[0] = {.stride = 28}},
+            .attrs = {
+                [ATTR_CUBE_POSITION] = { .format = sg.VertexFormat.FLOAT3 },
+                [ATTR_CUBE_COLOR0] = { .format = FLOAT4 },
+            }
+        },
+        .shader = shd,
+        .index_type = UINT16,
+        .cull_mode = BACK,
+        .depth = {
+            .write_enabled = true,
+            .compare = LESS_EQUAL
+        },
+        .label = "cube-pipeline",
+    }
+    state.pip = sg.makePipeline(&pd);
+}
+
+fn void frame() {
+    const f32 t = (f32)sapp.frameDuration() * 60.0;
+    state.rx += 1.0 * t; state.ry += 2.0 * t;
+    const VsParams vs_params = computeVsParam(state.rx, state.ry);
+    sg.PassAction pass_action = {}
+    pass_action.colors[0] = {
+        .load_action = CLEAR,
+        .clear_value = {0.25, 0.5, 0.75, 1.0}
+    }
+    sg.Pass pass = {.action = pass_action, .swapchain = sglue.swapchain()}
+    sg.beginPass(&pass);
+    sg.applyPipeline(state.pip);
+    sg.applyBindings(&state.bind);
+    sg.Range range = {(void*)&vs_params, sizeof(vs_params)}
+    sg.applyUniforms(UB_VS_PARAMS, &range);
+    sg.draw(0, 36, 1);
+    sg.endPass();
+    sg.commit();
+}
+
+fn void cleanup() {
+    sg.shutdown();
+}
+
+fn VsParams computeVsParam(f32 rx, f32 ry) {
+    const f32 w = sapp.widthf();
+    const f32 h = sapp.heightf();
+    Mat4 proj = Mat4.perspective(radians(60.0), w/h, 0.01, 10.0);
+    Vec3 v1 = {0.0, 1.5, 4.0}
+    Vec3 v2 = {}
+    Vec3 v3 = {0.0, 1.0, 0.0}
+    Mat4 view = Mat4.lookAt(&v1, &v2, &v3);
+    Mat4 view_proj = view.mul(&proj);
+    Mat4 rxm = Mat4.rotateX(radians(rx));
+    Mat4 rym = Mat4.rotateY(radians(ry));
+    Mat4 model = rym.mul(&rxm);
+    VsParams ret = {.mvp = model.mul(&view_proj)}
+    return ret;
+}
+
+public fn i32 main(i32 argc, char** argv) {
+    sapp.Desc desc = {
+        .init_cb = init,
+        .frame_cb = frame,
+        .cleanup_cb = cleanup,
+        .width = 640,
+        .height = 480,
+        .window_title = "cube",
+        .icon = {.sokol_default = true},
+        //.logger = {.func = slog.func},
+    }
+    sapp.run(&desc);
+    return 0;
+}
+

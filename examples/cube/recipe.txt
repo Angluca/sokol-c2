@@ -1,0 +1,11 @@
+plugin deps_generator [all-targets files private]
+plugin refs_generator [all-targets]
+
+executable cube
+    $warnings no-unused
+    $backend c no-build
+    $use math static
+    $use sokol static
+    main.c2
+    cube.glsl.c2
+end
