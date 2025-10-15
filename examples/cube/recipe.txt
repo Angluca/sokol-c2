@@ -6,6 +6,8 @@ executable cube
     $backend c no-build
     $use math static
     $use sokol static
+
     main.c2
+    sokol_math.c2
     cube.glsl.c2
 end

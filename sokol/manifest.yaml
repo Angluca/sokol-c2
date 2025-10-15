@@ -22,5 +22,4 @@ modules:
     - sokol_log
     - sokol_shape
     - sokol_time
-    - sokol_math
 
