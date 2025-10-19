@@ -9,7 +9,6 @@ info:
         - dynamic
 
 dependencies:
-    math: static
     libc: dynamic
 
 modules:

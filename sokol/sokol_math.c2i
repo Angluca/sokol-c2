@@ -33,31 +33,31 @@ fn Vec2 Vec2.create(f32 x, f32 y) {
 }
 
 fn Vec2 Vec2.zero() {
-    return Vec2.create(0.0, 0.0);
+    return {0.0, 0.0}
 }
 
 fn Vec2 Vec2.one() {
-    return Vec2.create(1.0, 1.0);
+    return {1.0, 1.0}
 }
 
 // Vec2 addition
 fn Vec2 Vec2.add(const Vec2* a, const Vec2* b) {
-    return Vec2.create(a.x + b.x, a.y + b.y);
+    return {a.x + b.x, a.y + b.y}
 }
 
 // Vec2 subtraction
 fn Vec2 Vec2.sub(const Vec2* a, const Vec2* b) {
-    return Vec2.create(a.x - b.x, a.y - b.y);
+    return {a.x - b.x, a.y - b.y}
 }
 
 // Vec2 scalar multiplication
 fn Vec2 Vec2.mul(const Vec2* v, f32 scalar) {
-    return Vec2.create(v.x * scalar, v.y * scalar);
+    return {v.x * scalar, v.y * scalar}
 }
 
 // Vec2 scalar division
 fn Vec2 Vec2.div(const Vec2* v, f32 scalar) {
-    return Vec2.create(v.x / scalar, v.y / scalar);
+    return {v.x / scalar, v.y / scalar}
 }
 
 // Vec2 dot product
@@ -88,10 +88,10 @@ fn Vec2 Vec2.normalize(const Vec2* v) {
 fn Vec2 Vec2.rotate(const Vec2* v, f32 angle) {
     f32 cos_a = cosf(angle);
     f32 sin_a = sinf(angle);
-    return Vec2.create(
+    return {
         v.x * cos_a - v.y * sin_a,
         v.x * sin_a + v.y * cos_a
-    );
+    }
 }
 
 // Vec2 angle
@@ -105,55 +105,55 @@ fn Vec3 Vec3.create(f32 x, f32 y, f32 z) {
 }
 
 fn Vec3 Vec3.zero() {
-    return Vec3.create(0.0, 0.0, 0.0);
+    return {0.0, 0.0, 0.0}
 }
 
 fn Vec3 Vec3.one() {
-    return Vec3.create(1.0, 1.0, 1.0);
+    return {1.0, 1.0, 1.0}
 }
 
 fn Vec3 Vec3.up() {
-    return Vec3.create(0.0, 1.0, 0.0);
+    return {0.0, 1.0, 0.0}
 }
 
 fn Vec3 Vec3.down() {
-    return Vec3.create(0.0, -1.0, 0.0);
+    return {0.0, -1.0, 0.0}
 }
 
 fn Vec3 Vec3.left() {
-    return Vec3.create(-1.0, 0.0, 0.0);
+    return {-1.0, 0.0, 0.0}
 }
 
 fn Vec3 Vec3.right() {
-    return Vec3.create(1.0, 0.0, 0.0);
+    return {1.0, 0.0, 0.0}
 }
 
 fn Vec3 Vec3.forward() {
-    return Vec3.create(0.0, 0.0, 1.0);
+    return {0.0, 0.0, 1.0}
 }
 
 fn Vec3 Vec3.back() {
-    return Vec3.create(0.0, 0.0, -1.0);
+    return {0.0, 0.0, -1.0}
 }
 
 // Vec3 addition
 fn Vec3 Vec3.add(const Vec3* a, const Vec3* b) {
-    return Vec3.create(a.x + b.x, a.y + b.y, a.z + b.z);
+    return {a.x + b.x, a.y + b.y, a.z + b.z}
 }
 
 // Vec3 subtraction
 fn Vec3 Vec3.sub(const Vec3* a, const Vec3* b) {
-    return Vec3.create(a.x - b.x, a.y - b.y, a.z - b.z);
+    return {a.x - b.x, a.y - b.y, a.z - b.z}
 }
 
 // Vec3 scalar multiplication
 fn Vec3 Vec3.mul(const Vec3* v, f32 scalar) {
-    return Vec3.create(v.x * scalar, v.y * scalar, v.z * scalar);
+    return {v.x * scalar, v.y * scalar, v.z * scalar}
 }
 
 // Vec3 scalar division
 fn Vec3 Vec3.div(const Vec3* v, f32 scalar) {
-    return Vec3.create(v.x / scalar, v.y / scalar, v.z / scalar);
+    return {v.x / scalar, v.y / scalar, v.z / scalar}
 }
 
 // Vec3 dot product
@@ -163,11 +163,11 @@ fn f32 Vec3.dot(const Vec3* a, const Vec3* b) {
 
 // Vec3 cross product
 fn Vec3 Vec3.cross(const Vec3* a, const Vec3* b) {
-    return Vec3.create(
+    return {
         a.y * b.z - a.z * b.y,
         a.z * b.x - a.x * b.z,
         a.x * b.y - a.y * b.x
-    );
+    }
 }
 
 // Vec3 length
@@ -216,30 +216,30 @@ fn Vec4 Vec4.create(f32 x, f32 y, f32 z, f32 w) {
 }
 
 fn Vec4 Vec4.zero() {
-    return Vec4.create(0.0, 0.0, 0.0, 0.0);
+    return {0.0, 0.0, 0.0, 0.0}
 }
 
 fn Vec4 Vec4.one() {
-    return Vec4.create(1.0, 1.0, 1.0, 1.0);
+    return {1.0, 1.0, 1.0, 1.0}
 }
 
 fn Vec4 Vec4.fromVec3(const Vec3* v, f32 w) {
-    return Vec4.create(v.x, v.y, v.z, w);
+    return {v.x, v.y, v.z, w}
 }
 
 // Vec4 addition
 fn Vec4 Vec4.add(const Vec4* a, const Vec4* b) {
-    return Vec4.create(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
+    return {a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w}
 }
 
 // Vec4 subtraction
 fn Vec4 Vec4.sub(const Vec4* a, const Vec4* b) {
-    return Vec4.create(a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w);
+    return {a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w}
 }
 
 // Vec4 scalar multiplication
 fn Vec4 Vec4.mul(const Vec4* v, f32 scalar) {
-    return Vec4.create(v.x * scalar, v.y * scalar, v.z * scalar, v.w * scalar);
+    return {v.x * scalar, v.y * scalar, v.z * scalar, v.w * scalar}
 }
 
 // Vec4 dot product
@@ -278,14 +278,14 @@ fn Vec4 Mat4.transformVec4(const Mat4* m, const Vec4* v) {
     f32 y = m.m[4] * v.x + m.m[5] * v.y + m.m[6] * v.z + m.m[7] * v.w;
     f32 z = m.m[8] * v.x + m.m[9] * v.y + m.m[10] * v.z + m.m[11] * v.w;
     f32 w = m.m[12] * v.x + m.m[13] * v.y + m.m[14] * v.z + m.m[15] * v.w;
-    return Vec4.create(x, y, z, w);
+    return {x, y, z, w}
 }
 
 // Mat4 transform Vec3
 fn Vec3 Mat4.transformVec3(const Mat4* m, const Vec3* v) {
     Vec4 temp = Vec4.fromVec3(v, 1.0);
     Vec4 result = Mat4.transformVec4(m, &temp);
-    return Vec3.create(result.x, result.y, result.z);
+    return {result.x, result.y, result.z}
 }
 
 // Mat4 translation matrix
@@ -470,14 +470,14 @@ fn f32 smoothstep(f32 edge0, f32 edge1, f32 x) {
 // Example usage
 fn void exampleUsage() {
     // Vec2 example
-    Vec2 pos = Vec2.create(10.0, 20.0);
-    Vec2 vel = Vec2.create(1.0, 2.0);
+    Vec2 pos = {10.0, 20.0}
+    Vec2 vel = {1.0, 2.0}
     Vec2 newPos = pos.add(&vel);
     f32 distance = Vec2.length(&newPos);
 
     // Vec3 example
-    Vec3 camPos = Vec3.create(0.0, 5.0, 10.0);
-    Vec3 lookAt = Vec3.create(0.0, 0.0, 0.0);
+    Vec3 camPos = {0.0, 5.0, 10.0}
+    Vec3 lookAt = {0.0, 0.0, 0.0}
     Vec3 up = Vec3.up();
 
     // Mat4 example
@@ -496,12 +496,12 @@ fn void exampleUsage() {
     model = temp_mul.mul(&translation);
 
     // Vector transformation
-    Vec3 vertex = Vec3.create(1.0, 1.0, 1.0);
+    Vec3 vertex = {1.0, 1.0, 1.0}
     Vec3 transformed = model.transformVec3(&vertex);
 
     // Complex calculation example
-    Vec3 start = Vec3.create(1.0, 2.0, 3.0);
-    Vec3 end = Vec3.create(4.0, 5.0, 6.0);
+    Vec3 start = {1.0, 2.0, 3.0}
+    Vec3 end = {4.0, 5.0, 6.0}
     Vec3 direction = end.sub(&start);
     Vec3 normalized_dir = Vec3.normalize(&direction);
     Vec3 reflected = normalized_dir.reflect(&up);

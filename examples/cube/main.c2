@@ -1,9 +1,9 @@
 module example;
-import sokol_math local;
 import sokol_app as sapp;
 import sokol_gfx as sg;
 import sokol_glue as sglue;
 import sokol_log as slog;
+import sokol_math local;
 
 // application state
 type State struct {
@@ -51,9 +51,10 @@ fn void init() {
          1.0,  1.0,  1.0,   1.0, 0.0, 0.5, 1.0,
          1.0,  1.0, -1.0,   1.0, 0.0, 0.5, 1.0
     } sg.BufferDesc vbd = {
-        .data = {.ptr = &vertices, .size = sizeof(vertices)},
+        .data = {.ptr = vertices, .size = sizeof(vertices)},
         .label = "cube-vertices"
-    } state.bind.vertex_buffers[0] = sg.makeBuffer(&vbd);
+    }
+    sg.Buffer vbuf = sg.makeBuffer(&vbd);
 
     // create an index buffer for the cube
     u16[] indices = {
@@ -64,11 +65,16 @@ fn void init() {
         16, 17, 18,  16, 18, 19,
         22, 21, 20,  23, 22, 20
     }
+    //sg.BufferDesc ibd = {
+        //.usage = {.index_buffer = true},
+        //.data = {indices, sizeof(indices)},
+        //.label = "cube-indices"
+    //}
     sg.BufferDesc ibd = {}
     ibd.usage.index_buffer = true;
-    ibd.data = {&indices, sizeof(indices)}
+    ibd.data = {indices, sizeof(indices)}
     ibd.label = "cube-indices";
-    state.bind.index_buffer = sg.makeBuffer(&ibd);
+    sg.Buffer ibuf = sg.makeBuffer(&ibd);
 
     // create shader
     sg.ShaderDesc sd = cubeShaderDesc(sg.queryBackend());
@@ -83,15 +89,18 @@ fn void init() {
             }
         },
         .shader = shd,
-        .index_type = UINT16,
-        .cull_mode = BACK,
+        .index_type = UINT16, // sg.IndexType.UINT16,
+        .cull_mode = BACK, // sg.CullMode.BACK,
         .depth = {
             .write_enabled = true,
-            .compare = LESS_EQUAL
+            .compare = LESS_EQUAL // sg.CompareFunc.LESS_EQUAL
         },
         .label = "cube-pipeline",
     }
     state.pip = sg.makePipeline(&pd);
+
+    state.bind.vertex_buffers[0] = vbuf;
+    state.bind.index_buffer = ibuf;
 }
 
 fn void frame() {
@@ -107,7 +116,7 @@ fn void frame() {
     sg.beginPass(&pass);
     sg.applyPipeline(state.pip);
     sg.applyBindings(&state.bind);
-    sg.Range range = {(void*)&vs_params, sizeof(vs_params)}
+    sg.Range range = {.ptr = (void*)&vs_params, .size = sizeof(vs_params)}
     sg.applyUniforms(UB_VS_PARAMS, &range);
     sg.draw(0, 36, 1);
     sg.endPass();
