@@ -49,7 +49,7 @@ fn void init() {
         -1.0,  1.0, -1.0,   1.0, 0.0, 0.5, 1.0,
         -1.0,  1.0,  1.0,   1.0, 0.0, 0.5, 1.0,
          1.0,  1.0,  1.0,   1.0, 0.0, 0.5, 1.0,
-         1.0,  1.0, -1.0,   1.0, 0.0, 0.5, 1.0
+         1.0,  1.0, -1.0,   1.0, 0.0, 0.5, 1.0,
     } sg.BufferDesc vbd = {
         .data = {.ptr = vertices, .size = sizeof(vertices)},
         .label = "cube-vertices"
@@ -63,33 +63,31 @@ fn void init() {
         8, 9, 10,  8, 10, 11,
         14, 13, 12,  15, 14, 12,
         16, 17, 18,  16, 18, 19,
-        22, 21, 20,  23, 22, 20
+        22, 21, 20,  23, 22, 20,
     }
-    //sg.BufferDesc ibd = {
-        //.usage = {.index_buffer = true},
-        //.data = {indices, sizeof(indices)},
-        //.label = "cube-indices"
-    //}
     sg.BufferDesc ibd = {}
     ibd.usage.index_buffer = true;
     ibd.data = {indices, sizeof(indices)}
     ibd.label = "cube-indices";
     sg.Buffer ibuf = sg.makeBuffer(&ibd);
 
+    state.bind.vertex_buffers[0] = vbuf;
+    state.bind.index_buffer = ibuf;
+
     // create shader
     sg.ShaderDesc sd = cubeShaderDesc(sg.queryBackend());
     sg.Shader shd = sg.makeShader(&sd);
     // create pipeline object
     sg.PipelineDesc pd = {
+        .shader = shd,
+        .index_type = UINT16, // sg.IndexType.UINT16,
         .layout = {
             .buffers = {[0] = {.stride = 28}},
             .attrs = {
-                [ATTR_CUBE_POSITION] = { .format = sg.VertexFormat.FLOAT3 },
+                [ATTR_CUBE_POSITION] = { .format = FLOAT3 },
                 [ATTR_CUBE_COLOR0] = { .format = FLOAT4 },
             }
         },
-        .shader = shd,
-        .index_type = UINT16, // sg.IndexType.UINT16,
         .cull_mode = BACK, // sg.CullMode.BACK,
         .depth = {
             .write_enabled = true,
@@ -98,9 +96,6 @@ fn void init() {
         .label = "cube-pipeline",
     }
     state.pip = sg.makePipeline(&pd);
-
-    state.bind.vertex_buffers[0] = vbuf;
-    state.bind.index_buffer = ibuf;
 }
 
 fn void frame() {
@@ -130,16 +125,16 @@ fn void cleanup() {
 fn VsParams computeVsParam(f32 rx, f32 ry) {
     const f32 w = sapp.widthf();
     const f32 h = sapp.heightf();
-    Mat4 proj = Mat4.perspective(radians(60.0), w/h, 0.01, 10.0);
-    Vec3 v1 = {0.0, 1.5, 4.0}
+    Mat4 proj = Mat4.perspective(radians(60.0), w/h, 1.0, 10.0);
+    Vec3 v1 = {0.0, 1.5, 6.0}
     Vec3 v2 = {}
     Vec3 v3 = {0.0, 1.0, 0.0}
     Mat4 view = Mat4.lookAt(&v1, &v2, &v3);
-    Mat4 view_proj = view.mul(&proj);
+    Mat4 view_proj = proj.mul(&view);
     Mat4 rxm = Mat4.rotateX(radians(rx));
     Mat4 rym = Mat4.rotateY(radians(ry));
-    Mat4 model = rym.mul(&rxm);
-    VsParams ret = {.mvp = model.mul(&view_proj)}
+    Mat4 model = rxm.mul(&rym);
+    VsParams ret = {.mvp = view_proj.mul(&model)}
     return ret;
 }
 

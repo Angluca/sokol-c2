@@ -362,7 +362,7 @@ fn sg.ShaderDesc cubeShaderDesc(sg.Backend backend) {
             desc.attrs[1].base_type = FLOAT;
             desc.attrs[1].glsl_name = "color0";
             desc.uniform_blocks[0].stage = VERTEX;
-            desc.uniform_blocks[0].layout = sg.UniformLayout.STD140;
+            desc.uniform_blocks[0].layout = STD140;
             desc.uniform_blocks[0].size = 64;
             desc.uniform_blocks[0].glsl_uniforms[0].type_ = FLOAT4;
             desc.uniform_blocks[0].glsl_uniforms[0].array_count = 4;
@@ -382,7 +382,7 @@ fn sg.ShaderDesc cubeShaderDesc(sg.Backend backend) {
             desc.attrs[1].hlsl_sem_name = "TEXCOORD";
             desc.attrs[1].hlsl_sem_index = 1;
             desc.uniform_blocks[0].stage = VERTEX;
-            desc.uniform_blocks[0].layout = sg.UniformLayout.STD140;
+            desc.uniform_blocks[0].layout = STD140;
             desc.uniform_blocks[0].size = 64;
             desc.uniform_blocks[0].hlsl_register_b_n = 0;
             break;
@@ -394,7 +394,7 @@ fn sg.ShaderDesc cubeShaderDesc(sg.Backend backend) {
             desc.attrs[0].base_type = FLOAT;
             desc.attrs[1].base_type = FLOAT;
             desc.uniform_blocks[0].stage = VERTEX;
-            desc.uniform_blocks[0].layout = sg.UniformLayout.STD140;
+            desc.uniform_blocks[0].layout = STD140;
             desc.uniform_blocks[0].size = 64;
             desc.uniform_blocks[0].msl_buffer_n = 0;
             break;
