@@ -4,7 +4,7 @@ C2 bindings for the sokol headers
 
 * have https://github.com/c2lang/c2compiler
 * get https://github.com/floooh/sokol
-* copy``` sokol-c2/sokol```to```c2compiler/libs/```or Your c2_lib dir
+* copy` sokol-c2/sokol`to Your C2_LIBDIR path or `c2compiler/libs/`
 * modify makefile:```LIB_SOURCE = (just download sokol path)```
 * If you want create new project, You can copy ./myapp :)
 

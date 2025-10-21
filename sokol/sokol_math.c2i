@@ -22,7 +22,7 @@ type Vec4 struct {
     f32 x, y, z, w;
 }
 
-// 4x4 Matrix
+// 4x4 Matrix - Row-major layout
 type Mat4 struct {
     f32[16] m;
 }
@@ -258,7 +258,7 @@ fn Mat4 Mat4.zero() {
     return {}
 }
 
-// Mat4 matrix multiplication
+// Mat4 matrix multiplication - Standard row-major
 fn Mat4 Mat4.mul(const Mat4* a, const Mat4* b) {
     Mat4 result;
     for (i32 i = 0; i < 4; i++) {
@@ -272,12 +272,12 @@ fn Mat4 Mat4.mul(const Mat4* a, const Mat4* b) {
     return result;
 }
 
-// Mat4 transform Vec4
+// Mat4 transform Vec4 - Row-major
 fn Vec4 Mat4.transformVec4(const Mat4* m, const Vec4* v) {
-    f32 x = m.m[0] * v.x + m.m[1] * v.y + m.m[2] * v.z + m.m[3] * v.w;
-    f32 y = m.m[4] * v.x + m.m[5] * v.y + m.m[6] * v.z + m.m[7] * v.w;
-    f32 z = m.m[8] * v.x + m.m[9] * v.y + m.m[10] * v.z + m.m[11] * v.w;
-    f32 w = m.m[12] * v.x + m.m[13] * v.y + m.m[14] * v.z + m.m[15] * v.w;
+    f32 x = m.m[0] * v.x + m.m[4] * v.y + m.m[8] * v.z + m.m[12] * v.w;
+    f32 y = m.m[1] * v.x + m.m[5] * v.y + m.m[9] * v.z + m.m[13] * v.w;
+    f32 z = m.m[2] * v.x + m.m[6] * v.y + m.m[10] * v.z + m.m[14] * v.w;
+    f32 w = m.m[3] * v.x + m.m[7] * v.y + m.m[11] * v.z + m.m[15] * v.w;
     return {x, y, z, w}
 }
 
@@ -288,7 +288,7 @@ fn Vec3 Mat4.transformVec3(const Mat4* m, const Vec3* v) {
     return {result.x, result.y, result.z}
 }
 
-// Mat4 translation matrix
+// Mat4 translation matrix - Row-major
 fn Mat4 Mat4.translate(f32 x, f32 y, f32 z) {
     Mat4 m = Mat4.identity();
     m.m[3] = x; m.m[7] = y; m.m[11] = z;
@@ -299,7 +299,7 @@ fn Mat4 Mat4.translateVec3(const Vec3* v) {
     return Mat4.translate(v.x, v.y, v.z);
 }
 
-// Mat4 scale matrix
+// Mat4 scale matrix - Row-major
 fn Mat4 Mat4.scale(f32 x, f32 y, f32 z) {
     Mat4 m = Mat4.identity();
     m.m[0] = x; m.m[5] = y; m.m[10] = z;
@@ -314,7 +314,7 @@ fn Mat4 Mat4.scaleUniform(f32 s) {
     return Mat4.scale(s, s, s);
 }
 
-// Mat4 rotation matrices
+// Mat4 rotation matrices - Row-major
 fn Mat4 Mat4.rotateX(f32 angle) {
     f32 c = cosf(angle);
     f32 s = sinf(angle);
@@ -362,7 +362,7 @@ fn Mat4 Mat4.rotateAxis(const Vec3* axis, f32 angle) {
     return m;
 }
 
-// Mat4 view matrix
+// Mat4 view matrix - Row-major
 fn Mat4 Mat4.lookAt(const Vec3* eye, const Vec3* center, const Vec3* up) {
     Vec3 temp_sub = Vec3.sub(center, eye);
     Vec3 f = Vec3.normalize(&temp_sub);
@@ -371,28 +371,28 @@ fn Mat4 Mat4.lookAt(const Vec3* eye, const Vec3* center, const Vec3* up) {
     Vec3 u = s.cross(&f);
 
     Mat4 m = Mat4.identity();
-    m.m[0] = s.x; m.m[4] = s.y; m.m[8] = s.z;
-    m.m[1] = u.x; m.m[5] = u.y; m.m[9] = u.z;
-    m.m[2] = -f.x; m.m[6] = -f.y; m.m[10] = -f.z;
 
-    f32 dot_s = s.dot(eye);
-    f32 dot_u = u.dot(eye);
-    f32 dot_f = f.dot(eye);
-
-    m.m[3] = -dot_s; m.m[7] = -dot_u; m.m[11] = dot_f;
+    // Row-major layout
+    m.m[0] = s.x; m.m[1] = u.x; m.m[2] = -f.x; m.m[3] = 0.0;
+    m.m[4] = s.y; m.m[5] = u.y; m.m[6] = -f.y; m.m[7] = 0.0;
+    m.m[8] = s.z; m.m[9] = u.z; m.m[10] = -f.z; m.m[11] = 0.0;
+    m.m[12] = -s.dot(eye); m.m[13] = -u.dot(eye); m.m[14] = f.dot(eye); m.m[15] = 1.0;
 
     return m;
 }
 
-// Mat4 perspective projection matrix
+// Mat4 perspective projection matrix - Row-major
 fn Mat4 Mat4.perspective(f32 fov, f32 aspect, f32 near, f32 far) {
     f32 f = 1.0 / tanf(fov * 0.5);
     Mat4 m = Mat4.zero();
+
     m.m[0] = f / aspect;
     m.m[5] = f;
     m.m[10] = (far + near) / (near - far);
     m.m[11] = -1.0;
     m.m[14] = (2.0 * far * near) / (near - far);
+    m.m[15] = 0.0;
+
     return m;
 }
 
@@ -465,44 +465,4 @@ fn f32 clamp(f32 value, f32 min, f32 max) {
 fn f32 smoothstep(f32 edge0, f32 edge1, f32 x) {
     f32 t = clamp((x - edge0) / (edge1 - edge0), 0.0, 1.0);
     return t * t * (3.0 - 2.0 * t);
-}
-
-// Example usage
-fn void exampleUsage() {
-    // Vec2 example
-    Vec2 pos = {10.0, 20.0}
-    Vec2 vel = {1.0, 2.0}
-    Vec2 newPos = pos.add(&vel);
-    f32 distance = Vec2.length(&newPos);
-
-    // Vec3 example
-    Vec3 camPos = {0.0, 5.0, 10.0}
-    Vec3 lookAt = {0.0, 0.0, 0.0}
-    Vec3 up = Vec3.up();
-
-    // Mat4 example
-    Mat4 view = Mat4.lookAt(&camPos, &lookAt, &up);
-    f32 fov_rad = radians(45.0);
-    f32 aspect = 16.0 / 9.0;
-    Mat4 proj = Mat4.perspective(fov_rad, aspect, 0.1, 100.0);
-    Mat4 mvp = proj.mul(&view);
-
-    // 3D transformation example
-    Mat4 model = Mat4.identity();
-    f32 rot_angle = radians(45.0);
-    Mat4 rotation = Mat4.rotateY(rot_angle);
-    Mat4 translation = Mat4.translate(5.0, 0.0, 0.0);
-    Mat4 temp_mul = model.mul(&rotation);
-    model = temp_mul.mul(&translation);
-
-    // Vector transformation
-    Vec3 vertex = {1.0, 1.0, 1.0}
-    Vec3 transformed = model.transformVec3(&vertex);
-
-    // Complex calculation example
-    Vec3 start = {1.0, 2.0, 3.0}
-    Vec3 end = {4.0, 5.0, 6.0}
-    Vec3 direction = end.sub(&start);
-    Vec3 normalized_dir = Vec3.normalize(&direction);
-    Vec3 reflected = normalized_dir.reflect(&up);
 }
